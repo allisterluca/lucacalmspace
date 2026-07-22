@@ -171,19 +171,10 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Interactive target styles */
+        /* Passive visual styles (guided like breathing) */
         .near-far-target {
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
             user-select: none;
-        }
-
-        .near-far-target.active {
-            box-shadow: 0 0 0 16px rgba(103, 193, 214, 0.25);
-            transform: scale(1.12);
-        }
-
-        .blink-lid {
-            transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
 
@@ -277,7 +268,7 @@
                 
                 <div>
                     <h3 class="font-semibold text-2xl text-emerald-900">Eye Reset</h3>
-                    <p class="text-emerald-700 mt-1.5 text-sm leading-snug">Tap, click &amp; animate through relaxing eye exercises. Big beautiful visuals to soothe tired eyes!</p>
+                    <p class="text-emerald-700 mt-1.5 text-sm leading-snug">Follow along with simple guided eye visuals. A relaxing 3-minute eye refresh for tired eyes.</p>
                     
                     <div class="flex items-center mt-5">
                         <button onclick="event.stopImmediatePropagation(); window.openEyeModal && window.openEyeModal()" 
@@ -412,25 +403,25 @@
                     <div id="eye-progress" class="bg-emerald-500 h-1.5 transition-all duration-300" style="width: 20%"></div>
                 </div>
 
-                <!-- === BIG INTERACTIVE BEAUTIFUL EYE VISUAL === -->
+                <!-- === SIMPLE GUIDED EYE VISUAL (static, calm) === -->
                 <div class="flex justify-center mb-5">
                     <div id="eye-visual-container" 
-                         class="eye-visual flex items-center justify-center relative cursor-pointer"
+                         class="eye-visual flex items-center justify-center"
                          style="width: 300px; height: 300px;">
                         
-                        <!-- Dynamic beautiful content injected by JS -->
+                        <!-- Static calm visual injected by JS -->
                         <div id="eye-visual" class="w-full h-full flex items-center justify-center"></div>
                         
                     </div>
                 </div>
 
-                <!-- Instruction + Interactive Prompt -->
+                <!-- Instruction + Passive Guidance -->
                 <div class="text-center mb-1 px-1">
                     <h4 id="eye-step-title" class="font-semibold text-xl text-emerald-900 mb-1"></h4>
                     <p id="eye-step-instruction" class="eye-instruction text-emerald-700 text-[15px] leading-tight"></p>
                     
-                    <!-- Interactive hint area -->
-                    <div id="eye-interactive-hint" 
+                    <!-- Passive guidance (no interactivity) -->
+                    <div id="eye-passive-hint" 
                          class="mt-3 text-xs text-emerald-600/80 font-medium">
                     </div>
                 </div>
@@ -630,7 +621,6 @@
                     });
                     
                     // cleanup
-                    if (window.eyeAnimationInterval) clearInterval(window.eyeAnimationInterval);
                     if (window.breathingInterval) clearInterval(window.breathingInterval);
                 }
             });
@@ -671,174 +661,87 @@
         
         // ========== EYE EXERCISES - COMPLETELY REDESIGNED BEAUTIFUL VERSION (no timers) ==========
         let eyeSteps = [
-            {
-                id: "twenty",
-                title: "20-20-20 Rule",
-                instruction: "Look far away to rest your eyes. Click the pupil to shift focus far into the distance.",
-                interactive: true,
-                type: "focus"
-            },
-            {
-                id: "palming",
-                title: "Warm Palming",
-                instruction: "Cover your eyes gently with warm palms. Tap to press and feel the comforting darkness.",
-                interactive: true,
-                type: "palm"
-            },
-            {
-                id: "rolls",
-                title: "Eye Rolls",
-                instruction: "Roll your eyes slowly and smoothly. Click anywhere on the eye to roll it.",
-                interactive: true,
-                type: "roll"
-            },
-            {
-                id: "nearfar",
-                title: "Near-Far Focus",
-                instruction: "Switch focus between near and far. Tap the dots to practice switching.",
-                interactive: true,
-                type: "nearfar"
-            },
-            {
-                id: "blink",
-                title: "Blinking Break",
-                instruction: "Gently blink to refresh and hydrate your eyes. Click the eye to blink.",
-                interactive: true,
-                type: "blink"
-            }
+            { id: "twenty", title: "20-20-20 Rule", instruction: "Look far into the distance to relax your eyes.", type: "focus" },
+            { id: "palming", title: "Warm Palming", instruction: "Cover your eyes with warm palms. Let the darkness settle.", type: "palm" },
+            { id: "rolls", title: "Eye Rolls", instruction: "Roll your eyes slowly in a circle.", type: "roll" },
+            { id: "nearfar", title: "Near-Far Focus", instruction: "Shift focus between near and far objects.", type: "nearfar" },
+            { id: "blink", title: "Blinking Break", instruction: "Gently blink to refresh your eyes.", type: "blink" }
         ];
-        
+
         let currentEyeStep = 0;
-        let eyeAnimationInterval = null;
-        let eyeInteractionState = {};
-        
+
         function openEyeModal() {
             const modal = document.getElementById('eye-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
             resetEyeSession(true);
         }
         window.openEyeModal = openEyeModal;
-        
+
         function closeEyeModal() {
             const modal = document.getElementById('eye-modal');
             modal.classList.remove('flex');
             modal.classList.add('hidden');
-            
-            // cleanup animations
-            if (eyeAnimationInterval) {
-                clearInterval(eyeAnimationInterval);
-                eyeAnimationInterval = null;
-            }
         }
-        
+
         function resetEyeSession(silent = false) {
-            if (eyeAnimationInterval) {
-                clearInterval(eyeAnimationInterval);
-                eyeAnimationInterval = null;
-            }
-            
             currentEyeStep = 0;
-            eyeInteractionState = {};
-            
             const progress = document.getElementById('eye-progress');
             if (progress) progress.style.width = '20%';
-            
             const nextBtn = document.getElementById('eye-next-btn');
             if (nextBtn) {
                 nextBtn.disabled = false;
                 nextBtn.style.display = 'flex';
                 nextBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
             }
-            
-            // load first step
             loadEyeStep(0);
-            
-            if (!silent) {
-                showToast("Session restarted! Let's relax those eyes 💕");
-            }
+            if (!silent) showToast("Session restarted! Let's relax those eyes 💕");
         }
-        
+
         function loadEyeStep(stepIndex) {
-            if (stepIndex >= eyeSteps.length) {
-                finishEyeSession();
-                return;
-            }
-            
+            if (stepIndex >= eyeSteps.length) { finishEyeSession(); return; }
             currentEyeStep = stepIndex;
             const step = eyeSteps[stepIndex];
-            
-            // Update UI labels
             document.getElementById('eye-step-label').innerHTML = `STEP ${stepIndex + 1} / ${eyeSteps.length}`;
-            
             document.getElementById('eye-step-title').innerHTML = step.title;
             document.getElementById('eye-step-instruction').innerHTML = step.instruction;
-            
-            // progress bar
             const progressPercent = Math.floor(((stepIndex + 1) / eyeSteps.length) * 100);
             document.getElementById('eye-progress').style.width = `${progressPercent}%`;
-            
-            // render beautiful new interactive visual
             renderEyeVisual(step);
-            
-            // update hint
             updateEyeHint(step);
-            
-            // reset next button
             const nextBtn = document.getElementById('eye-next-btn');
             nextBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
             nextBtn.onclick = () => nextEyeStep();
         }
-        
+
         function updateEyeHint(step) {
-            const hint = document.getElementById('eye-interactive-hint');
+            const hint = document.getElementById('eye-passive-hint');
             if (!hint) return;
-            
-            const hints = {
-                'focus': 'Click the eye or pupil to shift focus far away',
-                'palm': 'Tap the warm palms to feel the soothing darkness',
-                'roll': 'Click anywhere on the eye to roll it gently',
-                'nearfar': 'Tap NEAR or FAR to switch focus — aim for 8 switches!',
-                'blink': 'Click the eye to perform a full relaxing blink'
+            const hints = { 
+                'focus': 'Breathe softly and hold your gaze on the distant point.', 
+                'palm': 'Feel the warmth and let your eyes rest in darkness.', 
+                'roll': 'Relax and gently roll your eyes in a slow circle.', 
+                'nearfar': 'Gently shift your focus between the near and far targets.', 
+                'blink': 'Allow the natural rhythm of blinking to refresh your eyes.' 
             };
-            
-            hint.innerHTML = hints[step.type] || 'Interact with the visual above!';
+            hint.innerHTML = hints[step.type] || 'Just relax and watch.';
             hint.style.color = '#0e7490';
         }
-        
+
         function nextEyeStep() {
-            if (eyeAnimationInterval) {
-                clearInterval(eyeAnimationInterval);
-                eyeAnimationInterval = null;
-            }
-            
             currentEyeStep++;
-            
-            if (currentEyeStep >= eyeSteps.length) {
-                finishEyeSession();
-            } else {
-                loadEyeStep(currentEyeStep);
-            }
+            if (currentEyeStep >= eyeSteps.length) finishEyeSession();
+            else loadEyeStep(currentEyeStep);
         }
-        
+
         function prevEyeStep() {
-            if (eyeAnimationInterval) {
-                clearInterval(eyeAnimationInterval);
-                eyeAnimationInterval = null;
-            }
-            
-            if (currentEyeStep > 0) {
-                currentEyeStep--;
-                loadEyeStep(currentEyeStep);
-            }
+            if (currentEyeStep > 0) { currentEyeStep--; loadEyeStep(currentEyeStep); }
         }
-        
+
         function finishEyeSession() {
             const visual = document.getElementById('eye-visual');
             const progress = document.getElementById('eye-progress');
             const nextBtn = document.getElementById('eye-next-btn');
-            
             visual.innerHTML = `
                 <div class="text-center px-4 py-3" style="width:300px; height:300px; display:flex; align-items:center; justify-content:center; flex-direction:column;">
                     <div class="mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 text-emerald-500 rounded-full mb-5">
@@ -846,554 +749,40 @@
                     </div>
                     <h3 class="text-emerald-800 font-bold text-3xl mb-1">Beautiful work, Lucuska! 💕</h3>
                     <p class="text-emerald-700 text-[15px]">Your eyes feel refreshed and relaxed.<br><span class="text-xs text-emerald-600">— Tall Cappuccino is proud of you</span></p>
-                    
                     <div class="mt-6">
                         <button onclick="resetEyeSession()" class="px-7 py-[11px] text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 transition-colors text-white rounded-3xl flex items-center justify-center mx-auto gap-2 shadow">
                             <i class="fa-solid fa-redo"></i>
                             <span>Do another round</span>
                         </button>
                     </div>
-                </div>
-            `;
-            
+                </div>`;
             progress.style.width = '100%';
-            
             document.getElementById('eye-step-label').innerHTML = `COMPLETE!`;
             document.getElementById('eye-step-title').innerHTML = `All done!`;
             document.getElementById('eye-step-instruction').innerHTML = `Take a moment to enjoy the calm.`;
-            
-            document.getElementById('eye-interactive-hint').innerHTML = '';
-            
+            document.getElementById('eye-passive-hint').innerHTML = '';
             if (nextBtn) nextBtn.style.display = 'none';
-            
-            setTimeout(() => {
-                showToast("Your eyes feel better already! 😌");
-            }, 1300);
+            setTimeout(() => showToast("Your eyes feel better already! 😌"), 1300);
         }
-        
-        // ===== NEW: CORE BEAUTIFUL INTERACTIVE RENDER FUNCTIONS =====
+
+        // ===== SIMPLE STATIC CALM EYE VISUALS (no animations) =====
         function renderEyeVisual(step) {
             const container = document.getElementById('eye-visual');
             if (!container) return;
-            
-            // cleanup
-            container.innerHTML = '';
-            container.onclick = null;
-            if (eyeAnimationInterval) {
-                clearInterval(eyeAnimationInterval);
-                eyeAnimationInterval = null;
-            }
-            
             const type = step.type;
-            
+            container.innerHTML = '';
             if (type === 'focus') {
-                renderFocusVisual(container);
+                container.innerHTML = `<div style="width:270px;height:270px;display:flex;align-items:center;justify-content:center;"><svg width="270" height="270" viewBox="0 0 270 270"><defs><linearGradient id="sf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient></defs><ellipse cx="135" cy="135" rx="106" ry="74" fill="url(#sf)" stroke="#67c1d6" stroke-width="13"/><ellipse cx="135" cy="135" rx="50" ry="50" fill="#67c1d6"/><circle cx="135" cy="135" r="23" fill="#0e7490"/><circle cx="118" cy="118" r="11" fill="#f0f9ff" opacity="0.75"/><rect x="25" y="192" width="220" height="3" rx="2" fill="#a5f3fc" opacity="0.55"/><text x="135" y="218" text-anchor="middle" font-size="13" fill="#0e7490" font-weight="600">20 feet away</text></svg></div>`;
             } else if (type === 'palm') {
-                renderPalmVisual(container);
+                container.innerHTML = `<div style="position:relative;width:250px;height:250px;display:flex;align-items:center;justify-content:center;"><svg width="250" height="250" viewBox="0 0 250 250"><defs><linearGradient id="sp" x1="50%" y1="20%" x2="50%" y2="100%"><stop offset="0%" stop-color="#1e2937"/><stop offset="100%" stop-color="#0f172a"/></linearGradient></defs><ellipse cx="125" cy="125" rx="95" ry="64" fill="url(#sp)" stroke="#334155" stroke-width="16"/><ellipse cx="125" cy="125" rx="58" ry="20" fill="#475569"/></svg><div style="position:absolute;top:30px;left:6px;width:88px;height:112px;background:linear-gradient(#f8e1f4,#f3e8ff);border-radius:68% 32% 58% 42%;box-shadow:4px 8px 12px rgba(0,0,0,0.18);transform:rotate(-23deg);display:flex;align-items:center;justify-content:center;font-size:40px;opacity:0.95;">🖐️</div><div style="position:absolute;top:30px;right:6px;width:88px;height:112px;background:linear-gradient(#f8e1f4,#f3e8ff);border-radius:32% 68% 42% 58%;box-shadow:-4px 8px 12px rgba(0,0,0,0.18);transform:rotate(23deg);display:flex;align-items:center;justify-content:center;font-size:40px;opacity:0.95;">🖐️</div><div style="position:absolute;bottom:5px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b;font-weight:500;">Warm palms resting</div></div>`;
             } else if (type === 'roll') {
-                renderRollVisual(container);
+                container.innerHTML = `<div style="width:260px;height:260px;display:flex;align-items:center;justify-content:center;"><svg width="260" height="260" viewBox="0 0 260 260"><defs><linearGradient id="sr" x1="35%" y1="30%" x2="75%" y2="80%"><stop offset="0%" stop-color="#bae6fd"/><stop offset="100%" stop-color="#67c1d6"/></linearGradient></defs><ellipse cx="130" cy="130" rx="104" ry="70" fill="#f0f9ff" stroke="#67c1d6" stroke-width="13"/><ellipse cx="130" cy="130" rx="76" ry="76" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.18"/><ellipse cx="130" cy="130" rx="48" ry="48" fill="url(#sr)"/><circle cx="130" cy="130" r="21" fill="#0e7490"/><circle cx="116" cy="116" r="10" fill="#f0f9ff" opacity="0.7"/></svg></div>`;
             } else if (type === 'nearfar') {
-                renderNearFarVisual(container);
+                container.innerHTML = `<div style="position:relative;width:250px;height:250px;display:flex;align-items:center;justify-content:center;"><svg width="250" height="250" viewBox="0 0 250 250" style="position:absolute;"><ellipse cx="125" cy="125" rx="100" ry="66" fill="#f0f9ff" stroke="#67c1d6" stroke-width="13"/><ellipse cx="125" cy="125" rx="55" ry="55" fill="#bae6fd" opacity="0.4"/></svg><div style="position:absolute;left:26%;top:29%;width:72px;height:72px;background:#0e7490;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px #bae6fd;border:5px solid #67c1d6;font-size:12px;font-weight:800;color:white;">NEAR</div><div style="position:absolute;left:61%;top:45%;width:32px;height:32px;background:#67c1d6;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px #bae6fd;border:3px solid #0e7490;font-size:8px;font-weight:800;color:white;">FAR</div><div style="position:absolute;bottom:3px;width:100%;text-align:center;font-size:11px;color:#0e7490;font-weight:600;">Shift focus gently</div></div>`;
             } else if (type === 'blink') {
-                renderBlinkVisual(container);
+                container.innerHTML = `<div style="position:relative;width:250px;height:250px;display:flex;align-items:center;justify-content:center;"><svg width="250" height="250" viewBox="0 0 250 250"><defs><linearGradient id="sl" x1="50%" y1="10%" x2="50%" y2="100%"><stop offset="0%" stop-color="#f8e1f4"/><stop offset="100%" stop-color="#e0d1f0"/></linearGradient></defs><ellipse cx="125" cy="125" rx="98" ry="66" fill="#f0f9ff" stroke="#67c1d6" stroke-width="13"/><ellipse cx="125" cy="125" rx="52" ry="52" fill="#67c1d6"/><circle cx="125" cy="125" r="22" fill="#0e7490"/><circle cx="111" cy="111" r="10" fill="#bae6fd" opacity="0.7"/><ellipse cx="125" cy="104" rx="96" ry="28" fill="url(#sl)" stroke="#67c1d6" stroke-width="5"/><ellipse cx="125" cy="144" rx="96" ry="22" fill="url(#sl)" stroke="#67c1d6" stroke-width="3"/></svg><div style="position:absolute;bottom:1px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b;font-weight:500;">Soft blinking rest</div></div>`;
             }
         }
-        
-        function renderFocusVisual(container) {
-            container.innerHTML = `
-                <svg width="300" height="300" viewBox="0 0 300 300" class="eye-svg" style="cursor: pointer;">
-                    <!-- Soft outer glow ring -->
-                    <defs>
-                        <linearGradient id="focusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#f0f9ff"/>
-                            <stop offset="100%" stop-color="#bae6fd"/>
-                        </linearGradient>
-                        <radialGradient id="pupilGrad" cx="50%" cy="45%" r="60%" fx="40%" fy="35%">
-                            <stop offset="0%" stop-color="#0e7490"/>
-                            <stop offset="100%" stop-color="#134e4b"/>
-                        </radialGradient>
-                    </defs>
-                    
-                    <!-- Eye white -->
-                    <ellipse cx="150" cy="150" rx="118" ry="82" fill="url(#focusGrad)" stroke="#67c1d6" stroke-width="16"/>
-                    
-                    <!-- Iris -->
-                    <ellipse id="focus-iris" cx="150" cy="150" rx="58" ry="58" fill="#67c1d6"/>
-                    
-                    <!-- Pupil -->
-                    <circle id="focus-pupil" cx="150" cy="150" r="27" fill="url(#pupilGrad)"/>
-                    
-                    <!-- Highlight -->
-                    <circle cx="132" cy="130" r="13" fill="#f0f9ff" opacity="0.75"/>
-                    
-                    <!-- Far horizon line for distance -->
-                    <rect x="25" y="205" width="250" height="3" rx="2" fill="#a5f3fc" opacity="0.55"/>
-                    <text x="150" y="233" text-anchor="middle" font-size="13" fill="#0e7490" font-weight="600" letter-spacing="1">20 feet away</text>
-                    
-                    <!-- Soft distant trees hint -->
-                    <path d="M65 205 Q65 185 78 192 Q85 178 98 190" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.35"/>
-                    <path d="M210 205 Q210 185 225 192 Q232 178 245 190" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.35"/>
-                </svg>
-            `;
-            
-            const svg = container.querySelector('svg');
-            const pupil = container.querySelector('#focus-pupil');
-            const iris = container.querySelector('#focus-iris');
-            
-            let isFar = false;
-            
-            const focusAction = () => {
-                isFar = !isFar;
-                
-                if (isFar) {
-                    // shift to far (right + slightly smaller)
-                    iris.style.transition = 'transform 520ms cubic-bezier(0.23,1,0.32,1)';
-                    pupil.style.transition = 'transform 520ms cubic-bezier(0.23,1,0.32,1)';
-                    iris.style.transform = 'translateX(38px) scale(0.88)';
-                    pupil.style.transform = 'translateX(38px) scale(0.85)';
-                } else {
-                    iris.style.transform = 'translateX(0) scale(1)';
-                    pupil.style.transform = 'translateX(0) scale(1)';
-                }
-                
-                // gentle pulse feedback
-                setTimeout(() => {
-                    if (pupil) pupil.style.transition = 'transform 400ms ease';
-                }, 560);
-            };
-            
-            svg.addEventListener('click', focusAction);
-            container.addEventListener('click', focusAction);
-            
-            // Beautiful slow auto-drift animation
-            let driftPhase = 0;
-            eyeAnimationInterval = setInterval(() => {
-                if (!pupil || document.getElementById('eye-modal').classList.contains('hidden')) {
-                    clearInterval(eyeAnimationInterval);
-                    return;
-                }
-                if (!isFar) {
-                    driftPhase = (driftPhase + 1) % 12;
-                    const offset = Math.sin(driftPhase / 3) * 11;
-                    pupil.style.transition = 'transform 1200ms ease';
-                    pupil.style.transform = `translateX(${offset}px)`;
-                }
-            }, 1400);
-            
-            // initial soft drift
-            setTimeout(() => {
-                if (pupil && !isFar) pupil.style.transform = 'translateX(-7px)';
-            }, 450);
-        }
-        
-        function renderPalmVisual(container) {
-            container.innerHTML = `
-                <div style="position:relative; width:270px; height:270px;">
-                    <!-- Dark cozy eye base -->
-                    <svg id="palm-eye-svg" width="270" height="270" viewBox="0 0 270 270" class="eye-svg">
-                        <defs>
-                            <linearGradient id="darkEye" x1="50%" y1="20%" x2="50%" y2="100%">
-                                <stop offset="0%" stop-color="#1e2937"/>
-                                <stop offset="100%" stop-color="#0f172a"/>
-                            </linearGradient>
-                        </defs>
-                        <!-- Eye shape -->
-                        <ellipse cx="135" cy="135" rx="108" ry="72" fill="url(#darkEye)" stroke="#334155" stroke-width="22"/>
-                        <!-- Closed/relaxed iris area -->
-                        <ellipse cx="135" cy="135" rx="68" ry="26" fill="#475569"/>
-                    </svg>
-                    
-                    <!-- Beautiful warm palm overlays -->
-                    <div id="palm-left" class="palm-overlay" 
-                         style="position:absolute; top:38px; left:4px; width:104px; height:130px; background: linear-gradient(#f8e1f4, #f3e8ff); border-radius: 68% 32% 58% 42%; box-shadow: 5px 10px 15px rgba(0,0,0,0.18); transform: rotate(-25deg); display:flex; align-items:center; justify-content:center; font-size:46px; opacity:0.95; z-index:10; cursor:pointer;">
-                        🖐️
-                    </div>
-                    
-                    <div id="palm-right" class="palm-overlay" 
-                         style="position:absolute; top:38px; right:4px; width:104px; height:130px; background: linear-gradient(#f8e1f4, #f3e8ff); border-radius: 32% 68% 42% 58%; box-shadow: -5px 10px 15px rgba(0,0,0,0.18); transform: rotate(25deg); display:flex; align-items:center; justify-content:center; font-size:46px; opacity:0.95; z-index:10; cursor:pointer;">
-                        🖐️
-                    </div>
-                    
-                    <div style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:10px; color:#64748b; font-weight:600; letter-spacing:0.5px;">Tap to feel the warmth</div>
-                </div>
-            `;
-            
-            const palmL = container.querySelector('#palm-left');
-            const palmR = container.querySelector('#palm-right');
-            const eyeSvg = container.querySelector('#palm-eye-svg');
-            
-            let pressCount = 0;
-            
-            const pressPalms = () => {
-                pressCount++;
-                
-                // Beautiful press animation
-                palmL.style.transition = 'transform 240ms cubic-bezier(0.23,1,0.32,1)';
-                palmR.style.transition = 'transform 240ms cubic-bezier(0.23,1,0.32,1)';
-                
-                palmL.style.transform = 'rotate(-25deg) translateX(14px) scale(0.92)';
-                palmR.style.transform = 'rotate(25deg) translateX(-14px) scale(0.92)';
-                
-                if (eyeSvg) eyeSvg.style.filter = 'brightness(0.65)';
-                
-                setTimeout(() => {
-                    if (palmL && palmR) {
-                        palmL.style.transform = 'rotate(-25deg) translateX(0) scale(1)';
-                        palmR.style.transform = 'rotate(25deg) translateX(0) scale(1)';
-                    }
-                    if (eyeSvg) eyeSvg.style.filter = 'brightness(0.88)';
-                }, 430);
-                
-                // Warmth feedback
-                if (pressCount % 2 === 0) {
-                    const hint = document.getElementById('eye-interactive-hint');
-                    if (hint) {
-                        hint.innerHTML = 'So soothing...';
-                        hint.style.color = '#64748b';
-                        setTimeout(() => {
-                            if (hint && document.getElementById('eye-modal')) updateEyeHint(eyeSteps[currentEyeStep]);
-                        }, 1100);
-                    }
-                }
-            };
-            
-            palmL.addEventListener('click', pressPalms);
-            palmR.addEventListener('click', pressPalms);
-            eyeSvg.addEventListener('click', pressPalms);
-            container.addEventListener('click', pressPalms);
-            
-            // Gentle automatic palm presses for calm demo
-            eyeAnimationInterval = setInterval(() => {
-                if (!palmL || document.getElementById('eye-modal').classList.contains('hidden')) {
-                    clearInterval(eyeAnimationInterval);
-                    return;
-                }
-                if (pressCount < 5) pressPalms();
-            }, 4800);
-        }
-        
-        function renderRollVisual(container) {
-            container.innerHTML = `
-                <svg id="roll-svg" width="280" height="280" viewBox="0 0 280 280" class="eye-svg" style="cursor: pointer;">
-                    <defs>
-                        <linearGradient id="irisGrad" x1="35%" y1="30%" x2="75%" y2="80%">
-                            <stop offset="0%" stop-color="#bae6fd"/>
-                            <stop offset="100%" stop-color="#67c1d6"/>
-                        </linearGradient>
-                    </defs>
-                    
-                    <!-- Eye white -->
-                    <ellipse cx="140" cy="140" rx="114" ry="76" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
-                    
-                    <!-- Outer guide ring -->
-                    <ellipse cx="140" cy="140" rx="88" ry="88" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.15"/>
-                    
-                    <!-- Moving iris group -->
-                    <g id="roll-iris-group">
-                        <!-- Iris -->
-                        <ellipse cx="140" cy="140" rx="54" ry="54" fill="url(#irisGrad)"/>
-                        <!-- Pupil -->
-                        <circle cx="140" cy="140" r="25" fill="#0e7490"/>
-                        <!-- Highlight -->
-                        <circle cx="124" cy="123" r="11" fill="#f0f9ff" opacity="0.75"/>
-                    </g>
-                </svg>
-            `;
-            
-            const svg = container.querySelector('#roll-svg');
-            const irisGroup = container.querySelector('#roll-iris-group');
-            
-            let rotation = 0;
-            let direction = 1;
-            
-            const doRoll = (manual = true) => {
-                if (!irisGroup) return;
-                
-                direction = manual ? (direction === 1 ? -1 : 1) : direction;
-                
-                rotation += direction * (manual ? 125 : 32);
-                
-                irisGroup.style.transition = manual ? 'transform 580ms cubic-bezier(0.23,1,0.32,1)' : 'transform 1400ms linear';
-                irisGroup.style.transform = `rotate(${rotation}deg)`;
-                
-                // nice pupil shrink effect
-                const pupil = irisGroup.querySelector('circle');
-                if (pupil) {
-                    pupil.style.transition = 'r 280ms';
-                    pupil.setAttribute('r', manual ? '19' : '25');
-                    
-                    setTimeout(() => {
-                        if (pupil) pupil.setAttribute('r', '25');
-                    }, manual ? 560 : 900);
-                }
-                
-                eyeInteractionState.rolls = (eyeInteractionState.rolls || 0) + 1;
-            };
-            
-            svg.addEventListener('click', () => doRoll(true));
-            container.addEventListener('click', () => doRoll(true));
-            
-            // continuous beautiful slow roll
-            eyeAnimationInterval = setInterval(() => {
-                if (!irisGroup || document.getElementById('eye-modal').classList.contains('hidden')) {
-                    clearInterval(eyeAnimationInterval);
-                    return;
-                }
-                doRoll(false);
-            }, 2100);
-            
-            // start demo
-            setTimeout(() => {
-                if (irisGroup) doRoll(false);
-            }, 380);
-        }
-        
-        function renderNearFarVisual(container) {
-            container.innerHTML = `
-                <div style="position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center;">
-                    <!-- Beautiful eye background -->
-                    <svg width="280" height="280" viewBox="0 0 280 280" class="eye-svg" style="position:absolute; z-index:1;">
-                        <ellipse cx="140" cy="140" rx="112" ry="74" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
-                        <ellipse cx="140" cy="140" rx="62" ry="62" fill="#bae6fd" opacity="0.45"/>
-                    </svg>
-                    
-                    <!-- NEAR target -->
-                    <div id="near-target" class="near-far-target" 
-                         style="position:absolute; z-index:10; width:82px; height:82px; background:#0e7490; border-radius:9999px; display:flex; align-items:center; justify-content:center; box-shadow: 0 0 0 9px #bae6fd; cursor:pointer; font-size:13px; font-weight:900; color:white; border:6px solid #67c1d6; user-select:none;">
-                        NEAR
-                    </div>
-                    
-                    <!-- FAR target -->
-                    <div id="far-target" class="near-far-target" 
-                         style="position:absolute; z-index:10; width:38px; height:38px; background:#67c1d6; border-radius:9999px; display:flex; align-items:center; justify-content:center; box-shadow: 0 0 0 6px #bae6fd; cursor:pointer; font-size:8px; font-weight:900; color:white; border:4px solid #0e7490; user-select:none;">
-                        FAR
-                    </div>
-                    
-                    <div style="position:absolute; bottom:6px; width:100%; text-align:center; z-index:20;">
-                        <div id="nearfar-counter" style="font-size:12px; color:#0e7490; font-weight:700;">Switches: <span id="nf-count">0</span> / 8</div>
-                    </div>
-                </div>
-            `;
-            
-            const near = container.querySelector('#near-target');
-            const far = container.querySelector('#far-target');
-            const counterEl = container.querySelector('#nf-count');
-            
-            let switchCount = 0;
-            let current = 'near';
-            
-            eyeInteractionState.nearfar = 0;
-            
-            function switchFocus(to) {
-                if (to === current) return;
-                
-                switchCount++;
-                eyeInteractionState.nearfar = switchCount;
-                counterEl.textContent = switchCount;
-                
-                near.classList.remove('active');
-                far.classList.remove('active');
-                
-                if (to === 'near') {
-                    near.classList.add('active');
-                    near.style.transform = 'scale(1.2)';
-                    far.style.transform = 'scale(0.72)';
-                    
-                    near.style.left = '31%';
-                    near.style.top = '32%';
-                    far.style.left = '62%';
-                    far.style.top = '47%';
-                } else {
-                    far.classList.add('active');
-                    far.style.transform = 'scale(1.15)';
-                    near.style.transform = 'scale(0.72)';
-                    
-                    near.style.left = '26%';
-                    near.style.top = '38%';
-                    far.style.left = '56%';
-                    far.style.top = '32%';
-                }
-                
-                current = to;
-                
-                // soft flash on eye
-                const eyeBg = container.querySelector('svg');
-                if (eyeBg) {
-                    eyeBg.style.transition = 'filter 180ms';
-                    eyeBg.style.filter = 'brightness(1.15)';
-                    setTimeout(() => { if (eyeBg) eyeBg.style.filter = 'brightness(1)'; }, 220);
-                }
-                
-                if (switchCount >= 8) {
-                    setTimeout(() => {
-                        if (counterEl) {
-                            counterEl.style.transition = 'color 0.3s';
-                            counterEl.style.color = '#10b981';
-                            counterEl.innerHTML = `✅ ${switchCount}!`;
-                        }
-                    }, 220);
-                }
-            }
-            
-            // initial position
-            near.style.left = '31%';
-            near.style.top = '32%';
-            far.style.left = '62%';
-            far.style.top = '47%';
-            near.classList.add('active');
-            
-            near.onclick = () => switchFocus('near');
-            far.onclick = () => switchFocus('far');
-            
-            // container click toggles
-            container.onclick = (ev) => {
-                if (ev.target === container || ev.target.tagName === 'svg') {
-                    switchFocus(current === 'near' ? 'far' : 'near');
-                }
-            };
-            
-            // gentle demo animation
-            eyeAnimationInterval = setInterval(() => {
-                if (!near || !far || document.getElementById('eye-modal').classList.contains('hidden')) {
-                    clearInterval(eyeAnimationInterval);
-                    return;
-                }
-                if (switchCount < 8) {
-                    const next = (Math.random() > 0.5) ? 'far' : 'near';
-                    if (next !== current) {
-                        near.classList.remove('active');
-                        far.classList.remove('active');
-                        
-                        if (next === 'near') {
-                            near.classList.add('active');
-                            near.style.transform = 'scale(1.15)';
-                            far.style.transform = 'scale(0.7)';
-                        } else {
-                            far.classList.add('active');
-                            far.style.transform = 'scale(1.08)';
-                            near.style.transform = 'scale(0.7)';
-                        }
-                        
-                        setTimeout(() => {
-                            if (near && far) {
-                                if (current === 'near') {
-                                    near.style.transform = 'scale(1.2)';
-                                } else {
-                                    far.style.transform = 'scale(1.15)';
-                                }
-                            }
-                        }, 850);
-                    }
-                }
-            }, 3600);
-        }
-        
-        function renderBlinkVisual(container) {
-            container.innerHTML = `
-                <div style="position:relative; width:270px; height:270px;">
-                    <svg id="blink-svg" width="270" height="270" viewBox="0 0 270 270" class="eye-svg" style="cursor: pointer;">
-                        <defs>
-                            <linearGradient id="lidGrad" x1="50%" y1="10%" x2="50%" y2="100%">
-                                <stop offset="0%" stop-color="#f8e1f4"/>
-                                <stop offset="100%" stop-color="#e0d1f0"/>
-                            </linearGradient>
-                        </defs>
-                        
-                        <!-- Eye white -->
-                        <ellipse cx="135" cy="135" rx="110" ry="72" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
-                        
-                        <!-- Iris -->
-                        <ellipse cx="135" cy="135" rx="58" ry="58" fill="#67c1d6"/>
-                        
-                        <!-- Pupil -->
-                        <circle cx="135" cy="135" r="26" fill="#0e7490"/>
-                        
-                        <!-- Highlight -->
-                        <circle cx="120" cy="118" r="12" fill="#bae6fd" opacity="0.75"/>
-                        
-                        <!-- Upper eyelid -->
-                        <ellipse id="upper-lid" cx="135" cy="112" rx="108" ry="36" fill="url(#lidGrad)" stroke="#67c1d6" stroke-width="7"/>
-                        
-                        <!-- Lower eyelid -->
-                        <ellipse id="lower-lid" cx="135" cy="155" rx="108" ry="28" fill="url(#lidGrad)" stroke="#67c1d6" stroke-width="5"/>
-                    </svg>
-                    
-                    <div style="position:absolute; bottom:2px; left:50%; transform:translateX(-50%); font-size:10px; color:#64748b; font-weight:600;">Click to blink</div>
-                </div>
-            `;
-            
-            const svg = container.querySelector('#blink-svg');
-            const upper = container.querySelector('#upper-lid');
-            const lower = container.querySelector('#lower-lid');
-            
-            let blinkCount = 0;
-            
-            const performBlink = () => {
-                if (!upper || !lower) return;
-                
-                blinkCount++;
-                eyeInteractionState.blinks = blinkCount;
-                
-                upper.style.transition = 'transform 190ms cubic-bezier(0.4,0,0.2,1)';
-                lower.style.transition = 'transform 190ms cubic-bezier(0.4,0,0.2,1)';
-                
-                upper.style.transform = 'translateY(27px)';
-                lower.style.transform = 'translateY(-20px)';
-                
-                setTimeout(() => {
-                    if (upper && lower) {
-                        upper.style.transform = 'translateY(0)';
-                        lower.style.transform = 'translateY(0)';
-                    }
-                    
-                    // extra double blink sometimes
-                    if (blinkCount % 3 === 0) {
-                        setTimeout(() => {
-                            if (upper && lower && !document.getElementById('eye-modal').classList.contains('hidden')) {
-                                upper.style.transform = 'translateY(27px)';
-                                lower.style.transform = 'translateY(-20px)';
-                                
-                                setTimeout(() => {
-                                    if (upper && lower) {
-                                        upper.style.transform = 'translateY(0)';
-                                        lower.style.transform = 'translateY(0)';
-                                    }
-                                }, 160);
-                            }
-                        }, 290);
-                    }
-                }, 290);
-                
-                // update hint occasionally
-                if (blinkCount % 4 === 0) {
-                    const hint = document.getElementById('eye-interactive-hint');
-                    if (hint) {
-                        hint.innerHTML = `Lovely! ${blinkCount} blinks done`;
-                        setTimeout(() => {
-                            if (hint) updateEyeHint(eyeSteps[currentEyeStep]);
-                        }, 1050);
-                    }
-                }
-            };
-            
-            svg.addEventListener('click', performBlink);
-            container.addEventListener('click', performBlink);
-            
-            // gentle automatic blinks
-            eyeAnimationInterval = setInterval(() => {
-                if (!upper || document.getElementById('eye-modal').classList.contains('hidden')) {
-                    clearInterval(eyeAnimationInterval);
-                    return;
-                }
-                if (blinkCount < 8) performBlink();
-            }, 3900);
-            
-            // start with one demo blink
-            setTimeout(() => {
-                if (upper && lower) performBlink();
-            }, 520);
-        }
-        
         // ========== BREATHING (unchanged, 3 min) ==========
         let breathingInterval = null;
         let breathingTimeLeft = 180;
@@ -1770,5 +1159,5 @@
             init();
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1f268ec69489a40',t:'MTc4NDcyMjkzNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1f29bb4b8734904',t:'MTc4NDcyNTAxNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
