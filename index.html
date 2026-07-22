@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Lucuska's Calm Corner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: #e0aaff;
+        }
+        
+        body {
+            font-family: 'Poppins', system_ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        .calm-gradient {
+            background: linear-gradient(135deg, #f8e1f4 0%, #e0f0ff 100%);
+        }
+
+        .soft-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .soft-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(224 170 255 / 0.1), 0 8px 10px -6px rgb(224 170 255 / 0.1);
+        }
+
+        .destress-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .destress-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 50%;
+            height: 300%;
+            background: linear-gradient(
+                to right,
+                transparent 20%,
+                rgba(255,255,255,0.3) 50%,
+                transparent 80%
+            );
+            transform: skewX(25deg);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% {
+                transform: translateX(300%);
+            }
+        }
+
+        .section-header {
+            font-size: 1.85rem;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .activity-card {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+
+        .modal {
+            animation: fadeInScale 0.3s ease forwards;
+        }
+
+        .breathing-circle {
+            transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 0 15px rgba(224, 170, 255, 0.2);
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.35);
+            box-shadow: 0 0 0 25px rgba(224, 170, 255, 0.25);
+        }
+
+        .breathing-circle.exhale {
+            transform: scale(0.75);
+            box-shadow: 0 0 0 12px rgba(224, 170, 255, 0.15);
+        }
+
+        .fun-emoji {
+            font-size: 3.25rem;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .activity-card:hover .fun-emoji {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .nav-heart {
+            animation: heart-beat 2s infinite ease-in-out;
+        }
+
+        .trivia-card {
+            box-shadow: 0 10px 15px -3px rgb(224 170 255 / 0.15);
+        }
+
+        .step-text {
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        .destress-title {
+            background: linear-gradient(90deg, #c026ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* === NEW BEAUTIFUL EYE RESET STYLES === */
+        .eye-visual {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(145deg, #f0f9ff 0%, #e0f7fa 100%);
+            border-radius: 9999px;
+            border: 14px solid #67c1d6;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15),
+                        inset 0 10px 20px rgba(255,255,255,0.9),
+                        inset 0 -8px 15px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .eye-visual:hover {
+            box-shadow: 0 30px 60px -12px rgb(0 0 0 / 0.2),
+                        inset 0 12px 25px rgba(255,255,255,0.95);
+        }
+
+        .eye-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+        }
+
+        .eye-pupil {
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .palm-overlay {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .eye-instruction {
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        .relax-count {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Interactive target styles */
+        .near-far-target {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            user-select: none;
+        }
+
+        .near-far-target.active {
+            box-shadow: 0 0 0 16px rgba(103, 193, 214, 0.25);
+            transform: scale(1.12);
+        }
+
+        .blink-lid {
+            transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+    </style>
+</head>
+<body class="bg-[#fdf4ff] calm-gradient min-h-screen">
+    <!-- Header -->
+    <div class="max-w-2xl mx-auto px-5 pt-8 pb-4">
+        <div class="flex items-center justify-center gap-x-3 mb-1">
+            <div class="w-11 h-11 bg-gradient-to-br from-violet-400 to-fuchsia-400 rounded-2xl flex items-center justify-center shadow-inner">
+                <i class="fa-solid fa-heart text-white text-3xl"></i>
+            </div>
+            <div>
+                <h1 class="text-4xl font-bold heading-font text-violet-800">Lucuska's Calm Corner</h1>
+                <p class="text-[10px] text-center text-violet-400 -mt-1">from your Tall Cappuccino</p>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <p class="text-violet-600/90 text-lg font-light">Your personal little escape from the busy world 💕<br><span class="text-sm text-violet-500">— made with love by your Tall Cappuccino</span></p>
+            <div class="mt-2 inline-flex items-center gap-x-1.5 bg-white/60 backdrop-blur-md px-3 py-1 rounded-3xl text-sm shadow-sm">
+                <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span class="text-emerald-600 text-xs font-semibold tracking-wider">QUICK 3-MIN RESET</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Greeting -->
+    <div class="max-w-2xl mx-auto px-5">
+        <div class="bg-white/70 backdrop-blur-lg border border-violet-200 rounded-3xl px-6 py-5 shadow-sm mb-7">
+            <div class="flex items-start gap-x-4">
+                <div>
+                    <i class="fa-solid fa-star text-violet-500 text-3xl mt-0.5"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-violet-700 text-[15px] leading-tight">
+                        Hey! ❤️<br>
+                        Whenever work feels heavy, come here for a little fun break. 
+                        Take a deep breath and pick something.
+                    </p>
+                    <div class="flex items-center gap-x-2 mt-2">
+                        <p class="text-violet-400 text-xs tracking-tight">— Allister (aka Tall Cappuccino) 💕</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activities Grid -->
+    <div class="max-w-2xl mx-auto px-5 pb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- WindowSwap -->
+            <div onclick="window.openWindowSwap ? window.openWindowSwap() : alert('Please wait')" 
+                 class="activity-card bg-white rounded-3xl p-5 flex flex-col cursor-pointer hover:shadow-md soft-card border border-violet-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-sky-100 to-cyan-100 rounded-2xl">
+                        <i class="fa-solid fa-globe fa-2x text-sky-500"></i>
+                    </div>
+                    <div class="px-3 py-1 bg-sky-100 text-sky-600 text-xs font-bold rounded-2xl flex items-center">
+                        <i class="fa-solid fa-external-link-alt mr-1.5 text-xs"></i>
+                        <span class="font-semibold">VISIT</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-2xl text-sky-900">Window Swap</h3>
+                    <p class="text-sky-700 mt-1.5 text-sm leading-snug">Take a peaceful trip around the world. See real-time beautiful views from strangers' windows. So relaxing!</p>
+                    
+                    <div class="flex items-center mt-5">
+                        <button onclick="event.stopImmediatePropagation(); window.openWindowSwap && window.openWindowSwap()" 
+                                class="destress-btn flex-1 px-5 py-[13px] bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600 text-white text-sm font-bold rounded-3xl flex items-center justify-center gap-x-2 shadow-md active:scale-[0.985]">
+                            <span>Open WindowSwap</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Eye Exercises -->
+            <div onclick="window.openEyeModal ? window.openEyeModal() : alert('Please wait')" 
+                 class="activity-card bg-white rounded-3xl p-5 flex flex-col cursor-pointer hover:shadow-md soft-card border border-violet-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-teal-100 to-emerald-100 rounded-2xl">
+                        <i class="fa-solid fa-eye fa-2x text-emerald-500"></i>
+                    </div>
+                    <div class="px-3 py-1 bg-emerald-100 text-emerald-600 text-xs font-bold rounded-2xl flex items-center">
+                        <span class="font-semibold">3 MIN</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-2xl text-emerald-900">Eye Reset</h3>
+                    <p class="text-emerald-700 mt-1.5 text-sm leading-snug">Tap, click &amp; animate through relaxing eye exercises. Big beautiful visuals to soothe tired eyes!</p>
+                    
+                    <div class="flex items-center mt-5">
+                        <button onclick="event.stopImmediatePropagation(); window.openEyeModal && window.openEyeModal()" 
+                                class="destress-btn flex-1 px-5 py-[13px] bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-bold rounded-3xl flex items-center justify-center gap-x-2 shadow-md active:scale-[0.985]">
+                            <span>Start Guided Session</span>
+                            <i class="fa-solid fa-play ml-0.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Breathing -->
+            <div onclick="window.openBreathingModal ? window.openBreathingModal() : alert('Please wait')" 
+                 class="activity-card bg-white rounded-3xl p-5 flex flex-col cursor-pointer hover:shadow-md soft-card border border-violet-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-rose-100 to-fuchsia-100 rounded-2xl">
+                        <i class="fa-solid fa-wind fa-2x text-fuchsia-500"></i>
+                    </div>
+                    <div class="px-3 py-1 bg-fuchsia-100 text-fuchsia-600 text-xs font-bold rounded-2xl flex items-center">
+                        <span class="font-semibold">3 MIN</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-2xl text-fuchsia-900">Breathe Easy</h3>
+                    <p class="text-fuchsia-700 mt-1.5 text-sm leading-snug">A soothing 3-minute guided breathing exercise to calm your mind and melt away stress.</p>
+                    
+                    <div class="flex items-center mt-5">
+                        <button onclick="event.stopImmediatePropagation(); window.openBreathingModal && window.openBreathingModal()" 
+                                class="destress-btn flex-1 px-5 py-[13px] bg-gradient-to-r from-fuchsia-500 to-rose-500 hover:from-fuchsia-600 hover:to-rose-600 text-white text-sm font-bold rounded-3xl flex items-center justify-center gap-x-2 shadow-md active:scale-[0.985]">
+                            <span>Begin Breathing</span>
+                            <i class="fa-solid fa-wind ml-0.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trivia -->
+            <div onclick="window.openTriviaModal ? window.openTriviaModal() : alert('Please wait')" 
+                 class="activity-card bg-white rounded-3xl p-5 flex flex-col cursor-pointer hover:shadow-md soft-card border border-violet-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl">
+                        <i class="fa-solid fa-question-circle fa-2x text-amber-500"></i>
+                    </div>
+                    <div class="px-3 py-1 bg-amber-100 text-amber-600 text-xs font-bold rounded-2xl flex items-center">
+                        <span class="font-semibold">EASY GK</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-2xl text-amber-900">Quick Trivia</h3>
+                    <p class="text-amber-700 mt-1.5 text-sm leading-snug">Easy general knowledge questions! Fun, light &amp; relaxing brain break.</p>
+                    
+                    <div class="flex items-center mt-5">
+                        <button onclick="event.stopImmediatePropagation(); window.openTriviaModal && window.openTriviaModal()" 
+                                class="destress-btn flex-1 px-5 py-[13px] bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white text-sm font-bold rounded-3xl flex items-center justify-center gap-x-2 shadow-md active:scale-[0.985]">
+                            <span>Play Trivia</span>
+                            <i class="fa-solid fa-dice ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick, Draw! -->
+            <div onclick="openQuickDraw()" 
+                 class="activity-card bg-white rounded-3xl p-5 flex flex-col cursor-pointer hover:shadow-md soft-card border border-violet-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-indigo-100 to-violet-100 rounded-2xl">
+                        <i class="fa-solid fa-pencil-alt fa-2x text-indigo-500"></i>
+                    </div>
+                    <div class="px-3 py-1 bg-indigo-100 text-indigo-600 text-xs font-bold rounded-2xl flex items-center">
+                        <span class="font-semibold">FUN</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-2xl text-indigo-900">Quick, Draw!</h3>
+                    <p class="text-indigo-700 mt-1.5 text-sm leading-snug">Draw silly doodles and let Google&#x27;s AI guess what you drew. A super fun creative break!</p>
+                    
+                    <div class="flex items-center mt-5">
+                        <button onclick="event.stopImmediatePropagation(); openQuickDraw()" 
+                                class="destress-btn flex-1 px-5 py-[13px] bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white text-sm font-bold rounded-3xl flex items-center justify-center gap-x-2 shadow-md active:scale-[0.985]">
+                            <span>Open Quick, Draw!</span>
+                            <i class="fa-solid fa-external-link-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Extra love note -->
+    <div class="max-w-2xl mx-auto px-5">
+        <div class="text-center py-2 px-1">
+            <p class="text-xs text-violet-400">You are amazing, Lucuska. Take your time here. <span class="font-bold">💖</span><br>
+            <span class="text-[10px] text-violet-300">— from your Tall Cappuccino</span></p>
+        </div>
+    </div>
+
+    <!-- EYE EXERCISES MODAL - COMPLETELY REDESIGNED BEAUTIFUL INTERACTIVE VERSION -->
+    <div id="eye-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center">
+        <div onclick="event.target.id === 'eye-modal' && closeEyeModal()" class="absolute inset-0"></div>
+        
+        <div class="bg-white w-full sm:w-[480px] sm:rounded-3xl sm:m-4 rounded-t-3xl relative modal overflow-hidden shadow-2xl">
+            
+            <!-- Modal Header -->
+            <div class="px-5 pt-5 pb-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <i class="fa-solid fa-eye text-3xl"></i>
+                    <div>
+                        <h2 class="font-bold text-2xl">Eye Reset</h2>
+                        <p class="text-emerald-100 text-xs tracking-wider">3 MIN • RELAX YOUR EYES</p>
+                    </div>
+                </div>
+                <button onclick="closeEyeModal()" class="w-9 h-9 flex items-center justify-center text-white/90 hover:text-white">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-5">
+                
+                <!-- Progress (no timer) -->
+                <div class="flex justify-between items-center mb-3 px-1">
+                    <div class="flex items-center gap-x-2">
+                        <span id="eye-step-label" class="text-emerald-700 font-semibold text-xs">STEP 1 / 5</span>
+                        <span id="eye-step-name" class="text-xs text-emerald-600 font-medium"></span>
+                    </div>
+                </div>
+                
+                <div class="w-full bg-emerald-100 h-1.5 rounded-full overflow-hidden mb-5">
+                    <div id="eye-progress" class="bg-emerald-500 h-1.5 transition-all duration-300" style="width: 20%"></div>
+                </div>
+
+                <!-- === BIG INTERACTIVE BEAUTIFUL EYE VISUAL === -->
+                <div class="flex justify-center mb-5">
+                    <div id="eye-visual-container" 
+                         class="eye-visual flex items-center justify-center relative cursor-pointer"
+                         style="width: 300px; height: 300px;">
+                        
+                        <!-- Dynamic beautiful content injected by JS -->
+                        <div id="eye-visual" class="w-full h-full flex items-center justify-center"></div>
+                        
+                    </div>
+                </div>
+
+                <!-- Instruction + Interactive Prompt -->
+                <div class="text-center mb-1 px-1">
+                    <h4 id="eye-step-title" class="font-semibold text-xl text-emerald-900 mb-1"></h4>
+                    <p id="eye-step-instruction" class="eye-instruction text-emerald-700 text-[15px] leading-tight"></p>
+                    
+                    <!-- Interactive hint area -->
+                    <div id="eye-interactive-hint" 
+                         class="mt-3 text-xs text-emerald-600/80 font-medium">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 flex gap-3">
+                    <button onclick="prevEyeStep()" 
+                            class="flex-1 py-3 px-4 text-sm font-bold bg-emerald-100 hover:bg-emerald-200 transition-colors text-emerald-700 rounded-3xl flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-chevron-left"></i> 
+                        <span>Back</span>
+                    </button>
+                    
+                    <button id="eye-next-btn" onclick="nextEyeStep()" 
+                            class="flex-1 py-3 px-4 text-sm font-bold bg-emerald-600 hover:bg-emerald-700 transition-colors text-white rounded-3xl flex items-center justify-center gap-2">
+                        <span id="eye-next-text">Continue</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="flex justify-center mt-3">
+                    <button onclick="resetEyeSession()" 
+                            class="text-xs text-emerald-500 hover:text-emerald-600 font-medium flex items-center gap-1.5">
+                        <i class="fa-solid fa-redo text-xs"></i> 
+                        <span class="text-xs">Restart session</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BREATHING MODAL (BOX BREATHING) -->
+    <div id="breathing-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center">
+        <div onclick="event.target.id === 'breathing-modal' && closeBreathingModal()" class="absolute inset-0"></div>
+        
+        <div class="bg-white w-full sm:w-[420px] sm:rounded-3xl sm:m-4 rounded-t-3xl relative modal overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="px-5 pt-5 pb-3 bg-gradient-to-r from-fuchsia-500 to-rose-500 text-white flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <i class="fa-solid fa-wind text-3xl"></i>
+                    <div>
+                        <h2 class="font-bold text-2xl">Box Breathing</h2>
+                        <p class="text-fuchsia-100 text-xs tracking-wider">4-4-4-4 • 3 MIN</p>
+                    </div>
+                </div>
+                <button onclick="closeBreathingModal()" class="w-9 h-9 flex items-center justify-center text-white/90 hover:text-white">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                
+                <!-- Breathing Visual - Box style -->
+                <div class="flex justify-center my-4">
+                    <div id="breathing-visual" 
+                         class="w-48 h-48 bg-gradient-to-br from-fuchsia-300 to-rose-300 flex items-center justify-center rounded-3xl relative border-[14px] border-white shadow-inner transition-all duration-700 ease-in-out"
+                         style="box-shadow: 0 0 0 18px rgba(224, 170, 255, 0.18);">
+                        <div class="text-center">
+                            <div id="breathing-phase" class="font-extrabold text-fuchsia-900 text-2xl tracking-tighter">INHALE</div>
+                            <div id="breathing-count" class="font-mono text-fuchsia-700 text-6xl font-black tabular-nums leading-none mt-1">4</div>
+                            <div class="text-xs font-semibold text-fuchsia-600/80 tracking-[2px] mt-1">SECONDS</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-1 mb-2">
+                    <p id="breathing-instruction" class="text-sm font-medium text-fuchsia-700">Inhale slowly...</p>
+                </div>
+                
+                <!-- Timer -->
+                <div class="flex justify-center items-baseline gap-1 my-3">
+                    <div class="px-4 py-1 bg-fuchsia-100 text-fuchsia-800 rounded-3xl text-xs font-bold">
+                        <span id="breathing-timer">03:00</span>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 items-center justify-center mt-1">
+                    <button onclick="startBreathing()" id="breathing-start-btn"
+                            class="flex-1 px-6 py-3.5 text-sm font-extrabold bg-gradient-to-r from-fuchsia-500 to-rose-500 text-white rounded-[2rem] flex items-center justify-center gap-x-2 shadow">
+                        <i class="fa-solid fa-play mr-1"></i>
+                        <span id="breathing-btn-text">Start 3-Min Box Breathing</span>
+                    </button>
+                    
+                    <button onclick="stopBreathing()" id="breathing-stop-btn"
+                            class="hidden flex-1 px-6 py-3.5 text-sm font-extrabold bg-fuchsia-100 hover:bg-fuchsia-200 text-fuchsia-700 rounded-[2rem] flex items-center justify-center gap-x-2">
+                        <i class="fa-solid fa-stop mr-1"></i>
+                        <span>Stop</span>
+                    </button>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <div class="text-xs px-4 text-fuchsia-400">Inhale 4s → Hold 4s → Exhale 4s → Hold 4s</div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- TRIVIA MODAL -->
+    <div id="trivia-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center">
+        <div onclick="event.target.id === 'trivia-modal' && closeTriviaModal()" class="absolute inset-0"></div>
+        
+        <div class="bg-white w-full sm:w-[420px] sm:rounded-3xl sm:m-4 rounded-t-3xl relative modal overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="px-5 pt-5 pb-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <i class="fa-solid fa-question-circle text-3xl"></i>
+                    <div>
+                        <h2 class="font-bold text-2xl">Quick Trivia</h2>
+                        <p class="text-amber-100 text-xs tracking-wider">EASY GENERAL KNOWLEDGE</p>
+                    </div>
+                </div>
+                <button onclick="closeTriviaModal()" class="w-9 h-9 flex items-center justify-center text-white/90 hover:text-white">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                
+                <div id="trivia-question-container">
+                    <div class="mb-1">
+                        <span class="inline-block bg-yellow-100 text-yellow-700 px-3 text-xs py-[1px] rounded-2xl font-semibold tracking-wider">RANDOM QUESTION</span>
+                    </div>
+                    
+                    <h3 id="trivia-question" class="text-xl font-semibold text-amber-900 leading-tight min-h-[68px]"></h3>
+                    
+                    <!-- 4 options -->
+                    <div id="trivia-options" class="mt-5 grid grid-cols-1 gap-3">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button onclick="nextTriviaQuestion()" class="px-4 py-2 text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center justify-center mx-auto gap-1">
+                            <span>Skip to next</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Feedback area after answer -->
+                <div id="trivia-feedback-container" class="hidden">
+                    <div id="trivia-feedback" class="px-4 py-4 bg-yellow-50 border border-yellow-100 rounded-3xl text-center">
+                        <!-- JS fills this -->
+                    </div>
+                    
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="nextTriviaQuestion()" 
+                                class="flex-1 px-4 py-[12px] bg-amber-600 hover:bg-amber-700 transition-colors text-white font-bold rounded-[2.25rem] flex items-center justify-center gap-2 text-sm">
+                            <span>Next Question</span>
+                            <i class="fa-solid fa-redo"></i>
+                        </button>
+                        
+                        <button onclick="closeTriviaModal()" 
+                                class="flex-1 px-4 py-[12px] bg-white border border-amber-200 hover:bg-amber-50 text-amber-700 font-bold rounded-[2.25rem] flex items-center justify-center gap-2 text-sm">
+                            <span>Done</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#c026ff');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'heading': ['Playfair Display', 'Georgia', 'serif']
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Initialize everything
+        function init() {
+            initializeTailwind();
+            
+            // Keyboard support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape") {
+                    const modals = ['eye-modal', 'breathing-modal', 'trivia-modal'];
+                    modals.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && !el.classList.contains('hidden')) {
+                            el.classList.add('hidden');
+                            el.classList.remove('flex');
+                        }
+                    });
+                    
+                    // cleanup
+                    if (window.eyeAnimationInterval) clearInterval(window.eyeAnimationInterval);
+                    if (window.breathingInterval) clearInterval(window.breathingInterval);
+                }
+            });
+            
+            console.log('%c[Calm Corner] Ready — fresh beautiful Eye Reset + Quick Doodle', 'color:#c026ff');
+        }
+        
+        // ========== WINDOW SWAP ==========
+        function openWindowSwap() {
+            window.open('https://window-swap.com/', '_blank');
+            showToast("Enjoy your little window adventure! 🌍");
+        }
+        window.openWindowSwap = openWindowSwap;
+
+        // ========== QUICK, DRAW! (opens the official Google page - no API, no canvas) ==========
+        function openQuickDraw() {
+            window.open('https://quickdraw.withgoogle.com/', '_blank');
+            showToast("Have fun doodling! Google's AI will try to guess your drawings 🎨");
+        }
+        window.openQuickDraw = openQuickDraw;
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translate(-50%,0);z-index:99999';
+            toast.innerHTML = `
+                <div class="px-5 py-3 bg-white shadow-xl border border-violet-200 text-violet-700 rounded-3xl flex items-center text-sm max-w-[280px]">
+                    <span class="font-medium">${message}</span>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 250);
+            }, 2400);
+        }
+        
+        // ========== EYE EXERCISES - COMPLETELY REDESIGNED BEAUTIFUL VERSION (no timers) ==========
+        let eyeSteps = [
+            {
+                id: "twenty",
+                title: "20-20-20 Rule",
+                instruction: "Look far away to rest your eyes. Click the pupil to shift focus far into the distance.",
+                interactive: true,
+                type: "focus"
+            },
+            {
+                id: "palming",
+                title: "Warm Palming",
+                instruction: "Cover your eyes gently with warm palms. Tap to press and feel the comforting darkness.",
+                interactive: true,
+                type: "palm"
+            },
+            {
+                id: "rolls",
+                title: "Eye Rolls",
+                instruction: "Roll your eyes slowly and smoothly. Click anywhere on the eye to roll it.",
+                interactive: true,
+                type: "roll"
+            },
+            {
+                id: "nearfar",
+                title: "Near-Far Focus",
+                instruction: "Switch focus between near and far. Tap the dots to practice switching.",
+                interactive: true,
+                type: "nearfar"
+            },
+            {
+                id: "blink",
+                title: "Blinking Break",
+                instruction: "Gently blink to refresh and hydrate your eyes. Click the eye to blink.",
+                interactive: true,
+                type: "blink"
+            }
+        ];
+        
+        let currentEyeStep = 0;
+        let eyeAnimationInterval = null;
+        let eyeInteractionState = {};
+        
+        function openEyeModal() {
+            const modal = document.getElementById('eye-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            resetEyeSession(true);
+        }
+        window.openEyeModal = openEyeModal;
+        
+        function closeEyeModal() {
+            const modal = document.getElementById('eye-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            
+            // cleanup animations
+            if (eyeAnimationInterval) {
+                clearInterval(eyeAnimationInterval);
+                eyeAnimationInterval = null;
+            }
+        }
+        
+        function resetEyeSession(silent = false) {
+            if (eyeAnimationInterval) {
+                clearInterval(eyeAnimationInterval);
+                eyeAnimationInterval = null;
+            }
+            
+            currentEyeStep = 0;
+            eyeInteractionState = {};
+            
+            const progress = document.getElementById('eye-progress');
+            if (progress) progress.style.width = '20%';
+            
+            const nextBtn = document.getElementById('eye-next-btn');
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.style.display = 'flex';
+                nextBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+            }
+            
+            // load first step
+            loadEyeStep(0);
+            
+            if (!silent) {
+                showToast("Session restarted! Let's relax those eyes 💕");
+            }
+        }
+        
+        function loadEyeStep(stepIndex) {
+            if (stepIndex >= eyeSteps.length) {
+                finishEyeSession();
+                return;
+            }
+            
+            currentEyeStep = stepIndex;
+            const step = eyeSteps[stepIndex];
+            
+            // Update UI labels
+            document.getElementById('eye-step-label').innerHTML = `STEP ${stepIndex + 1} / ${eyeSteps.length}`;
+            
+            document.getElementById('eye-step-title').innerHTML = step.title;
+            document.getElementById('eye-step-instruction').innerHTML = step.instruction;
+            
+            // progress bar
+            const progressPercent = Math.floor(((stepIndex + 1) / eyeSteps.length) * 100);
+            document.getElementById('eye-progress').style.width = `${progressPercent}%`;
+            
+            // render beautiful new interactive visual
+            renderEyeVisual(step);
+            
+            // update hint
+            updateEyeHint(step);
+            
+            // reset next button
+            const nextBtn = document.getElementById('eye-next-btn');
+            nextBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+            nextBtn.onclick = () => nextEyeStep();
+        }
+        
+        function updateEyeHint(step) {
+            const hint = document.getElementById('eye-interactive-hint');
+            if (!hint) return;
+            
+            const hints = {
+                'focus': 'Click the eye or pupil to shift focus far away',
+                'palm': 'Tap the warm palms to feel the soothing darkness',
+                'roll': 'Click anywhere on the eye to roll it gently',
+                'nearfar': 'Tap NEAR or FAR to switch focus — aim for 8 switches!',
+                'blink': 'Click the eye to perform a full relaxing blink'
+            };
+            
+            hint.innerHTML = hints[step.type] || 'Interact with the visual above!';
+            hint.style.color = '#0e7490';
+        }
+        
+        function nextEyeStep() {
+            if (eyeAnimationInterval) {
+                clearInterval(eyeAnimationInterval);
+                eyeAnimationInterval = null;
+            }
+            
+            currentEyeStep++;
+            
+            if (currentEyeStep >= eyeSteps.length) {
+                finishEyeSession();
+            } else {
+                loadEyeStep(currentEyeStep);
+            }
+        }
+        
+        function prevEyeStep() {
+            if (eyeAnimationInterval) {
+                clearInterval(eyeAnimationInterval);
+                eyeAnimationInterval = null;
+            }
+            
+            if (currentEyeStep > 0) {
+                currentEyeStep--;
+                loadEyeStep(currentEyeStep);
+            }
+        }
+        
+        function finishEyeSession() {
+            const visual = document.getElementById('eye-visual');
+            const progress = document.getElementById('eye-progress');
+            const nextBtn = document.getElementById('eye-next-btn');
+            
+            visual.innerHTML = `
+                <div class="text-center px-4 py-3" style="width:300px; height:300px; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 text-emerald-500 rounded-full mb-5">
+                        <i class="fa-solid fa-check-circle text-5xl"></i>
+                    </div>
+                    <h3 class="text-emerald-800 font-bold text-3xl mb-1">Beautiful work, Lucuska! 💕</h3>
+                    <p class="text-emerald-700 text-[15px]">Your eyes feel refreshed and relaxed.<br><span class="text-xs text-emerald-600">— Tall Cappuccino is proud of you</span></p>
+                    
+                    <div class="mt-6">
+                        <button onclick="resetEyeSession()" class="px-7 py-[11px] text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 transition-colors text-white rounded-3xl flex items-center justify-center mx-auto gap-2 shadow">
+                            <i class="fa-solid fa-redo"></i>
+                            <span>Do another round</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            progress.style.width = '100%';
+            
+            document.getElementById('eye-step-label').innerHTML = `COMPLETE!`;
+            document.getElementById('eye-step-title').innerHTML = `All done!`;
+            document.getElementById('eye-step-instruction').innerHTML = `Take a moment to enjoy the calm.`;
+            
+            document.getElementById('eye-interactive-hint').innerHTML = '';
+            
+            if (nextBtn) nextBtn.style.display = 'none';
+            
+            setTimeout(() => {
+                showToast("Your eyes feel better already! 😌");
+            }, 1300);
+        }
+        
+        // ===== NEW: CORE BEAUTIFUL INTERACTIVE RENDER FUNCTIONS =====
+        function renderEyeVisual(step) {
+            const container = document.getElementById('eye-visual');
+            if (!container) return;
+            
+            // cleanup
+            container.innerHTML = '';
+            container.onclick = null;
+            if (eyeAnimationInterval) {
+                clearInterval(eyeAnimationInterval);
+                eyeAnimationInterval = null;
+            }
+            
+            const type = step.type;
+            
+            if (type === 'focus') {
+                renderFocusVisual(container);
+            } else if (type === 'palm') {
+                renderPalmVisual(container);
+            } else if (type === 'roll') {
+                renderRollVisual(container);
+            } else if (type === 'nearfar') {
+                renderNearFarVisual(container);
+            } else if (type === 'blink') {
+                renderBlinkVisual(container);
+            }
+        }
+        
+        function renderFocusVisual(container) {
+            container.innerHTML = `
+                <svg width="300" height="300" viewBox="0 0 300 300" class="eye-svg" style="cursor: pointer;">
+                    <!-- Soft outer glow ring -->
+                    <defs>
+                        <linearGradient id="focusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f0f9ff"/>
+                            <stop offset="100%" stop-color="#bae6fd"/>
+                        </linearGradient>
+                        <radialGradient id="pupilGrad" cx="50%" cy="45%" r="60%" fx="40%" fy="35%">
+                            <stop offset="0%" stop-color="#0e7490"/>
+                            <stop offset="100%" stop-color="#134e4b"/>
+                        </radialGradient>
+                    </defs>
+                    
+                    <!-- Eye white -->
+                    <ellipse cx="150" cy="150" rx="118" ry="82" fill="url(#focusGrad)" stroke="#67c1d6" stroke-width="16"/>
+                    
+                    <!-- Iris -->
+                    <ellipse id="focus-iris" cx="150" cy="150" rx="58" ry="58" fill="#67c1d6"/>
+                    
+                    <!-- Pupil -->
+                    <circle id="focus-pupil" cx="150" cy="150" r="27" fill="url(#pupilGrad)"/>
+                    
+                    <!-- Highlight -->
+                    <circle cx="132" cy="130" r="13" fill="#f0f9ff" opacity="0.75"/>
+                    
+                    <!-- Far horizon line for distance -->
+                    <rect x="25" y="205" width="250" height="3" rx="2" fill="#a5f3fc" opacity="0.55"/>
+                    <text x="150" y="233" text-anchor="middle" font-size="13" fill="#0e7490" font-weight="600" letter-spacing="1">20 feet away</text>
+                    
+                    <!-- Soft distant trees hint -->
+                    <path d="M65 205 Q65 185 78 192 Q85 178 98 190" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.35"/>
+                    <path d="M210 205 Q210 185 225 192 Q232 178 245 190" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.35"/>
+                </svg>
+            `;
+            
+            const svg = container.querySelector('svg');
+            const pupil = container.querySelector('#focus-pupil');
+            const iris = container.querySelector('#focus-iris');
+            
+            let isFar = false;
+            
+            const focusAction = () => {
+                isFar = !isFar;
+                
+                if (isFar) {
+                    // shift to far (right + slightly smaller)
+                    iris.style.transition = 'transform 520ms cubic-bezier(0.23,1,0.32,1)';
+                    pupil.style.transition = 'transform 520ms cubic-bezier(0.23,1,0.32,1)';
+                    iris.style.transform = 'translateX(38px) scale(0.88)';
+                    pupil.style.transform = 'translateX(38px) scale(0.85)';
+                } else {
+                    iris.style.transform = 'translateX(0) scale(1)';
+                    pupil.style.transform = 'translateX(0) scale(1)';
+                }
+                
+                // gentle pulse feedback
+                setTimeout(() => {
+                    if (pupil) pupil.style.transition = 'transform 400ms ease';
+                }, 560);
+            };
+            
+            svg.addEventListener('click', focusAction);
+            container.addEventListener('click', focusAction);
+            
+            // Beautiful slow auto-drift animation
+            let driftPhase = 0;
+            eyeAnimationInterval = setInterval(() => {
+                if (!pupil || document.getElementById('eye-modal').classList.contains('hidden')) {
+                    clearInterval(eyeAnimationInterval);
+                    return;
+                }
+                if (!isFar) {
+                    driftPhase = (driftPhase + 1) % 12;
+                    const offset = Math.sin(driftPhase / 3) * 11;
+                    pupil.style.transition = 'transform 1200ms ease';
+                    pupil.style.transform = `translateX(${offset}px)`;
+                }
+            }, 1400);
+            
+            // initial soft drift
+            setTimeout(() => {
+                if (pupil && !isFar) pupil.style.transform = 'translateX(-7px)';
+            }, 450);
+        }
+        
+        function renderPalmVisual(container) {
+            container.innerHTML = `
+                <div style="position:relative; width:270px; height:270px;">
+                    <!-- Dark cozy eye base -->
+                    <svg id="palm-eye-svg" width="270" height="270" viewBox="0 0 270 270" class="eye-svg">
+                        <defs>
+                            <linearGradient id="darkEye" x1="50%" y1="20%" x2="50%" y2="100%">
+                                <stop offset="0%" stop-color="#1e2937"/>
+                                <stop offset="100%" stop-color="#0f172a"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Eye shape -->
+                        <ellipse cx="135" cy="135" rx="108" ry="72" fill="url(#darkEye)" stroke="#334155" stroke-width="22"/>
+                        <!-- Closed/relaxed iris area -->
+                        <ellipse cx="135" cy="135" rx="68" ry="26" fill="#475569"/>
+                    </svg>
+                    
+                    <!-- Beautiful warm palm overlays -->
+                    <div id="palm-left" class="palm-overlay" 
+                         style="position:absolute; top:38px; left:4px; width:104px; height:130px; background: linear-gradient(#f8e1f4, #f3e8ff); border-radius: 68% 32% 58% 42%; box-shadow: 5px 10px 15px rgba(0,0,0,0.18); transform: rotate(-25deg); display:flex; align-items:center; justify-content:center; font-size:46px; opacity:0.95; z-index:10; cursor:pointer;">
+                        🖐️
+                    </div>
+                    
+                    <div id="palm-right" class="palm-overlay" 
+                         style="position:absolute; top:38px; right:4px; width:104px; height:130px; background: linear-gradient(#f8e1f4, #f3e8ff); border-radius: 32% 68% 42% 58%; box-shadow: -5px 10px 15px rgba(0,0,0,0.18); transform: rotate(25deg); display:flex; align-items:center; justify-content:center; font-size:46px; opacity:0.95; z-index:10; cursor:pointer;">
+                        🖐️
+                    </div>
+                    
+                    <div style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:10px; color:#64748b; font-weight:600; letter-spacing:0.5px;">Tap to feel the warmth</div>
+                </div>
+            `;
+            
+            const palmL = container.querySelector('#palm-left');
+            const palmR = container.querySelector('#palm-right');
+            const eyeSvg = container.querySelector('#palm-eye-svg');
+            
+            let pressCount = 0;
+            
+            const pressPalms = () => {
+                pressCount++;
+                
+                // Beautiful press animation
+                palmL.style.transition = 'transform 240ms cubic-bezier(0.23,1,0.32,1)';
+                palmR.style.transition = 'transform 240ms cubic-bezier(0.23,1,0.32,1)';
+                
+                palmL.style.transform = 'rotate(-25deg) translateX(14px) scale(0.92)';
+                palmR.style.transform = 'rotate(25deg) translateX(-14px) scale(0.92)';
+                
+                if (eyeSvg) eyeSvg.style.filter = 'brightness(0.65)';
+                
+                setTimeout(() => {
+                    if (palmL && palmR) {
+                        palmL.style.transform = 'rotate(-25deg) translateX(0) scale(1)';
+                        palmR.style.transform = 'rotate(25deg) translateX(0) scale(1)';
+                    }
+                    if (eyeSvg) eyeSvg.style.filter = 'brightness(0.88)';
+                }, 430);
+                
+                // Warmth feedback
+                if (pressCount % 2 === 0) {
+                    const hint = document.getElementById('eye-interactive-hint');
+                    if (hint) {
+                        hint.innerHTML = 'So soothing...';
+                        hint.style.color = '#64748b';
+                        setTimeout(() => {
+                            if (hint && document.getElementById('eye-modal')) updateEyeHint(eyeSteps[currentEyeStep]);
+                        }, 1100);
+                    }
+                }
+            };
+            
+            palmL.addEventListener('click', pressPalms);
+            palmR.addEventListener('click', pressPalms);
+            eyeSvg.addEventListener('click', pressPalms);
+            container.addEventListener('click', pressPalms);
+            
+            // Gentle automatic palm presses for calm demo
+            eyeAnimationInterval = setInterval(() => {
+                if (!palmL || document.getElementById('eye-modal').classList.contains('hidden')) {
+                    clearInterval(eyeAnimationInterval);
+                    return;
+                }
+                if (pressCount < 5) pressPalms();
+            }, 4800);
+        }
+        
+        function renderRollVisual(container) {
+            container.innerHTML = `
+                <svg id="roll-svg" width="280" height="280" viewBox="0 0 280 280" class="eye-svg" style="cursor: pointer;">
+                    <defs>
+                        <linearGradient id="irisGrad" x1="35%" y1="30%" x2="75%" y2="80%">
+                            <stop offset="0%" stop-color="#bae6fd"/>
+                            <stop offset="100%" stop-color="#67c1d6"/>
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Eye white -->
+                    <ellipse cx="140" cy="140" rx="114" ry="76" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
+                    
+                    <!-- Outer guide ring -->
+                    <ellipse cx="140" cy="140" rx="88" ry="88" fill="none" stroke="#67c1d6" stroke-width="3" opacity="0.15"/>
+                    
+                    <!-- Moving iris group -->
+                    <g id="roll-iris-group">
+                        <!-- Iris -->
+                        <ellipse cx="140" cy="140" rx="54" ry="54" fill="url(#irisGrad)"/>
+                        <!-- Pupil -->
+                        <circle cx="140" cy="140" r="25" fill="#0e7490"/>
+                        <!-- Highlight -->
+                        <circle cx="124" cy="123" r="11" fill="#f0f9ff" opacity="0.75"/>
+                    </g>
+                </svg>
+            `;
+            
+            const svg = container.querySelector('#roll-svg');
+            const irisGroup = container.querySelector('#roll-iris-group');
+            
+            let rotation = 0;
+            let direction = 1;
+            
+            const doRoll = (manual = true) => {
+                if (!irisGroup) return;
+                
+                direction = manual ? (direction === 1 ? -1 : 1) : direction;
+                
+                rotation += direction * (manual ? 125 : 32);
+                
+                irisGroup.style.transition = manual ? 'transform 580ms cubic-bezier(0.23,1,0.32,1)' : 'transform 1400ms linear';
+                irisGroup.style.transform = `rotate(${rotation}deg)`;
+                
+                // nice pupil shrink effect
+                const pupil = irisGroup.querySelector('circle');
+                if (pupil) {
+                    pupil.style.transition = 'r 280ms';
+                    pupil.setAttribute('r', manual ? '19' : '25');
+                    
+                    setTimeout(() => {
+                        if (pupil) pupil.setAttribute('r', '25');
+                    }, manual ? 560 : 900);
+                }
+                
+                eyeInteractionState.rolls = (eyeInteractionState.rolls || 0) + 1;
+            };
+            
+            svg.addEventListener('click', () => doRoll(true));
+            container.addEventListener('click', () => doRoll(true));
+            
+            // continuous beautiful slow roll
+            eyeAnimationInterval = setInterval(() => {
+                if (!irisGroup || document.getElementById('eye-modal').classList.contains('hidden')) {
+                    clearInterval(eyeAnimationInterval);
+                    return;
+                }
+                doRoll(false);
+            }, 2100);
+            
+            // start demo
+            setTimeout(() => {
+                if (irisGroup) doRoll(false);
+            }, 380);
+        }
+        
+        function renderNearFarVisual(container) {
+            container.innerHTML = `
+                <div style="position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center;">
+                    <!-- Beautiful eye background -->
+                    <svg width="280" height="280" viewBox="0 0 280 280" class="eye-svg" style="position:absolute; z-index:1;">
+                        <ellipse cx="140" cy="140" rx="112" ry="74" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
+                        <ellipse cx="140" cy="140" rx="62" ry="62" fill="#bae6fd" opacity="0.45"/>
+                    </svg>
+                    
+                    <!-- NEAR target -->
+                    <div id="near-target" class="near-far-target" 
+                         style="position:absolute; z-index:10; width:82px; height:82px; background:#0e7490; border-radius:9999px; display:flex; align-items:center; justify-content:center; box-shadow: 0 0 0 9px #bae6fd; cursor:pointer; font-size:13px; font-weight:900; color:white; border:6px solid #67c1d6; user-select:none;">
+                        NEAR
+                    </div>
+                    
+                    <!-- FAR target -->
+                    <div id="far-target" class="near-far-target" 
+                         style="position:absolute; z-index:10; width:38px; height:38px; background:#67c1d6; border-radius:9999px; display:flex; align-items:center; justify-content:center; box-shadow: 0 0 0 6px #bae6fd; cursor:pointer; font-size:8px; font-weight:900; color:white; border:4px solid #0e7490; user-select:none;">
+                        FAR
+                    </div>
+                    
+                    <div style="position:absolute; bottom:6px; width:100%; text-align:center; z-index:20;">
+                        <div id="nearfar-counter" style="font-size:12px; color:#0e7490; font-weight:700;">Switches: <span id="nf-count">0</span> / 8</div>
+                    </div>
+                </div>
+            `;
+            
+            const near = container.querySelector('#near-target');
+            const far = container.querySelector('#far-target');
+            const counterEl = container.querySelector('#nf-count');
+            
+            let switchCount = 0;
+            let current = 'near';
+            
+            eyeInteractionState.nearfar = 0;
+            
+            function switchFocus(to) {
+                if (to === current) return;
+                
+                switchCount++;
+                eyeInteractionState.nearfar = switchCount;
+                counterEl.textContent = switchCount;
+                
+                near.classList.remove('active');
+                far.classList.remove('active');
+                
+                if (to === 'near') {
+                    near.classList.add('active');
+                    near.style.transform = 'scale(1.2)';
+                    far.style.transform = 'scale(0.72)';
+                    
+                    near.style.left = '31%';
+                    near.style.top = '32%';
+                    far.style.left = '62%';
+                    far.style.top = '47%';
+                } else {
+                    far.classList.add('active');
+                    far.style.transform = 'scale(1.15)';
+                    near.style.transform = 'scale(0.72)';
+                    
+                    near.style.left = '26%';
+                    near.style.top = '38%';
+                    far.style.left = '56%';
+                    far.style.top = '32%';
+                }
+                
+                current = to;
+                
+                // soft flash on eye
+                const eyeBg = container.querySelector('svg');
+                if (eyeBg) {
+                    eyeBg.style.transition = 'filter 180ms';
+                    eyeBg.style.filter = 'brightness(1.15)';
+                    setTimeout(() => { if (eyeBg) eyeBg.style.filter = 'brightness(1)'; }, 220);
+                }
+                
+                if (switchCount >= 8) {
+                    setTimeout(() => {
+                        if (counterEl) {
+                            counterEl.style.transition = 'color 0.3s';
+                            counterEl.style.color = '#10b981';
+                            counterEl.innerHTML = `✅ ${switchCount}!`;
+                        }
+                    }, 220);
+                }
+            }
+            
+            // initial position
+            near.style.left = '31%';
+            near.style.top = '32%';
+            far.style.left = '62%';
+            far.style.top = '47%';
+            near.classList.add('active');
+            
+            near.onclick = () => switchFocus('near');
+            far.onclick = () => switchFocus('far');
+            
+            // container click toggles
+            container.onclick = (ev) => {
+                if (ev.target === container || ev.target.tagName === 'svg') {
+                    switchFocus(current === 'near' ? 'far' : 'near');
+                }
+            };
+            
+            // gentle demo animation
+            eyeAnimationInterval = setInterval(() => {
+                if (!near || !far || document.getElementById('eye-modal').classList.contains('hidden')) {
+                    clearInterval(eyeAnimationInterval);
+                    return;
+                }
+                if (switchCount < 8) {
+                    const next = (Math.random() > 0.5) ? 'far' : 'near';
+                    if (next !== current) {
+                        near.classList.remove('active');
+                        far.classList.remove('active');
+                        
+                        if (next === 'near') {
+                            near.classList.add('active');
+                            near.style.transform = 'scale(1.15)';
+                            far.style.transform = 'scale(0.7)';
+                        } else {
+                            far.classList.add('active');
+                            far.style.transform = 'scale(1.08)';
+                            near.style.transform = 'scale(0.7)';
+                        }
+                        
+                        setTimeout(() => {
+                            if (near && far) {
+                                if (current === 'near') {
+                                    near.style.transform = 'scale(1.2)';
+                                } else {
+                                    far.style.transform = 'scale(1.15)';
+                                }
+                            }
+                        }, 850);
+                    }
+                }
+            }, 3600);
+        }
+        
+        function renderBlinkVisual(container) {
+            container.innerHTML = `
+                <div style="position:relative; width:270px; height:270px;">
+                    <svg id="blink-svg" width="270" height="270" viewBox="0 0 270 270" class="eye-svg" style="cursor: pointer;">
+                        <defs>
+                            <linearGradient id="lidGrad" x1="50%" y1="10%" x2="50%" y2="100%">
+                                <stop offset="0%" stop-color="#f8e1f4"/>
+                                <stop offset="100%" stop-color="#e0d1f0"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Eye white -->
+                        <ellipse cx="135" cy="135" rx="110" ry="72" fill="#f0f9ff" stroke="#67c1d6" stroke-width="15"/>
+                        
+                        <!-- Iris -->
+                        <ellipse cx="135" cy="135" rx="58" ry="58" fill="#67c1d6"/>
+                        
+                        <!-- Pupil -->
+                        <circle cx="135" cy="135" r="26" fill="#0e7490"/>
+                        
+                        <!-- Highlight -->
+                        <circle cx="120" cy="118" r="12" fill="#bae6fd" opacity="0.75"/>
+                        
+                        <!-- Upper eyelid -->
+                        <ellipse id="upper-lid" cx="135" cy="112" rx="108" ry="36" fill="url(#lidGrad)" stroke="#67c1d6" stroke-width="7"/>
+                        
+                        <!-- Lower eyelid -->
+                        <ellipse id="lower-lid" cx="135" cy="155" rx="108" ry="28" fill="url(#lidGrad)" stroke="#67c1d6" stroke-width="5"/>
+                    </svg>
+                    
+                    <div style="position:absolute; bottom:2px; left:50%; transform:translateX(-50%); font-size:10px; color:#64748b; font-weight:600;">Click to blink</div>
+                </div>
+            `;
+            
+            const svg = container.querySelector('#blink-svg');
+            const upper = container.querySelector('#upper-lid');
+            const lower = container.querySelector('#lower-lid');
+            
+            let blinkCount = 0;
+            
+            const performBlink = () => {
+                if (!upper || !lower) return;
+                
+                blinkCount++;
+                eyeInteractionState.blinks = blinkCount;
+                
+                upper.style.transition = 'transform 190ms cubic-bezier(0.4,0,0.2,1)';
+                lower.style.transition = 'transform 190ms cubic-bezier(0.4,0,0.2,1)';
+                
+                upper.style.transform = 'translateY(27px)';
+                lower.style.transform = 'translateY(-20px)';
+                
+                setTimeout(() => {
+                    if (upper && lower) {
+                        upper.style.transform = 'translateY(0)';
+                        lower.style.transform = 'translateY(0)';
+                    }
+                    
+                    // extra double blink sometimes
+                    if (blinkCount % 3 === 0) {
+                        setTimeout(() => {
+                            if (upper && lower && !document.getElementById('eye-modal').classList.contains('hidden')) {
+                                upper.style.transform = 'translateY(27px)';
+                                lower.style.transform = 'translateY(-20px)';
+                                
+                                setTimeout(() => {
+                                    if (upper && lower) {
+                                        upper.style.transform = 'translateY(0)';
+                                        lower.style.transform = 'translateY(0)';
+                                    }
+                                }, 160);
+                            }
+                        }, 290);
+                    }
+                }, 290);
+                
+                // update hint occasionally
+                if (blinkCount % 4 === 0) {
+                    const hint = document.getElementById('eye-interactive-hint');
+                    if (hint) {
+                        hint.innerHTML = `Lovely! ${blinkCount} blinks done`;
+                        setTimeout(() => {
+                            if (hint) updateEyeHint(eyeSteps[currentEyeStep]);
+                        }, 1050);
+                    }
+                }
+            };
+            
+            svg.addEventListener('click', performBlink);
+            container.addEventListener('click', performBlink);
+            
+            // gentle automatic blinks
+            eyeAnimationInterval = setInterval(() => {
+                if (!upper || document.getElementById('eye-modal').classList.contains('hidden')) {
+                    clearInterval(eyeAnimationInterval);
+                    return;
+                }
+                if (blinkCount < 8) performBlink();
+            }, 3900);
+            
+            // start with one demo blink
+            setTimeout(() => {
+                if (upper && lower) performBlink();
+            }, 520);
+        }
+        
+        // ========== BREATHING (unchanged, 3 min) ==========
+        let breathingInterval = null;
+        let breathingTimeLeft = 180;
+        let breathingPhase = 0;
+        let breathingRunning = false;
+        
+        function openBreathingModal() {
+            const modal = document.getElementById('breathing-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            resetBreathingUI();
+        }
+        window.openBreathingModal = openBreathingModal;
+        
+        function closeBreathingModal() {
+            const modal = document.getElementById('breathing-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            stopBreathing();
+        }
+        
+        function resetBreathingUI() {
+            const phaseEl = document.getElementById('breathing-phase');
+            const countEl = document.getElementById('breathing-count');
+            const visual = document.getElementById('breathing-visual');
+            const instruction = document.getElementById('breathing-instruction');
+            const timerEl = document.getElementById('breathing-timer');
+            
+            phaseEl.textContent = 'READY';
+            countEl.textContent = '4';
+            instruction.textContent = 'Tap Start to begin Box Breathing';
+            timerEl.textContent = '03:00';
+            
+            visual.style.transform = 'scale(1)';
+            visual.style.boxShadow = '0 0 0 18px rgba(224, 170, 255, 0.18)';
+            
+            document.getElementById('breathing-start-btn').style.display = 'flex';
+            document.getElementById('breathing-stop-btn').classList.add('hidden');
+            
+            breathingRunning = false;
+            breathingTimeLeft = 180;
+        }
+        
+        function startBreathing() {
+            if (breathingRunning) return;
+            
+            breathingRunning = true;
+            breathingTimeLeft = 180;
+            breathingPhase = 0;
+            
+            const startBtn = document.getElementById('breathing-start-btn');
+            const stopBtn = document.getElementById('breathing-stop-btn');
+            const phaseEl = document.getElementById('breathing-phase');
+            const countEl = document.getElementById('breathing-count');
+            const visual = document.getElementById('breathing-visual');
+            const instruction = document.getElementById('breathing-instruction');
+            const timerEl = document.getElementById('breathing-timer');
+            
+            startBtn.style.display = 'none';
+            stopBtn.classList.remove('hidden');
+            stopBtn.style.display = 'flex';
+            
+            if (breathingInterval) clearInterval(breathingInterval);
+            
+            breathingInterval = setInterval(() => {
+                if (!breathingRunning) return;
+                
+                breathingTimeLeft--;
+                const mins = Math.floor(breathingTimeLeft / 60);
+                const secs = breathingTimeLeft % 60;
+                timerEl.textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+                
+                if (breathingTimeLeft <= 0) {
+                    stopBreathing();
+                    finishBreathing();
+                    return;
+                }
+                
+                const cycleTime = (180 - breathingTimeLeft) % 16;
+                
+                if (cycleTime < 4) {
+                    const remaining = 4 - cycleTime;
+                    phaseEl.textContent = 'INHALE';
+                    countEl.textContent = remaining;
+                    instruction.textContent = 'Breathe in slowly...';
+                    
+                    const scale = 1 + (cycleTime / 4) * 0.45;
+                    visual.style.transform = `scale(${scale})`;
+                    visual.style.boxShadow = '0 0 0 25px rgba(224, 170, 255, 0.25)';
+                    
+                } else if (cycleTime < 8) {
+                    const remaining = 8 - cycleTime;
+                    phaseEl.textContent = 'HOLD';
+                    countEl.textContent = remaining;
+                    instruction.textContent = 'Hold your breath...';
+                    visual.style.boxShadow = '0 0 0 28px rgba(224, 170, 255, 0.28)';
+                    
+                } else if (cycleTime < 12) {
+                    const remaining = 12 - cycleTime;
+                    phaseEl.textContent = 'EXHALE';
+                    countEl.textContent = remaining;
+                    instruction.textContent = 'Slowly exhale...';
+                    
+                    const progress = (cycleTime - 8) / 4;
+                    const scale = 1.45 - progress * 0.45;
+                    visual.style.transform = `scale(${scale})`;
+                    visual.style.boxShadow = '0 0 0 18px rgba(224, 170, 255, 0.18)';
+                    
+                } else {
+                    const remaining = 16 - cycleTime;
+                    phaseEl.textContent = 'HOLD';
+                    countEl.textContent = remaining;
+                    instruction.textContent = 'Hold...';
+                    visual.style.transform = 'scale(1)';
+                    visual.style.boxShadow = '0 0 0 15px rgba(224, 170, 255, 0.15)';
+                }
+                
+            }, 1000);
+            
+            // initial
+            phaseEl.textContent = 'INHALE';
+            countEl.textContent = '4';
+            instruction.textContent = 'Breathe in slowly...';
+            visual.style.transform = 'scale(1.1)';
+        }
+        
+        function stopBreathing() {
+            breathingRunning = false;
+            
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+                breathingInterval = null;
+            }
+            
+            const startBtn = document.getElementById('breathing-start-btn');
+            const stopBtn = document.getElementById('breathing-stop-btn');
+            const visual = document.getElementById('breathing-visual');
+            const instruction = document.getElementById('breathing-instruction');
+            const phaseEl = document.getElementById('breathing-phase');
+            const countEl = document.getElementById('breathing-count');
+            
+            if (startBtn) startBtn.style.display = 'flex';
+            if (stopBtn) stopBtn.classList.add('hidden');
+            
+            visual.style.transform = 'scale(1)';
+            visual.style.boxShadow = '0 0 0 18px rgba(224, 170, 255, 0.18)';
+            
+            phaseEl.textContent = 'PAUSED';
+            countEl.textContent = '4';
+            instruction.textContent = 'Session paused';
+        }
+        
+        function finishBreathing() {
+            const phaseEl = document.getElementById('breathing-phase');
+            const countEl = document.getElementById('breathing-count');
+            const instruction = document.getElementById('breathing-instruction');
+            const visual = document.getElementById('breathing-visual');
+            
+            phaseEl.textContent = 'DONE';
+            countEl.textContent = '🎉';
+            instruction.innerHTML = 'Beautiful work. You are calm and centered.';
+            visual.style.transform = 'scale(1)';
+            visual.style.boxShadow = '0 0 0 18px rgba(224, 170, 255, 0.18)';
+            
+            setTimeout(() => {
+                showToast("You did amazing, Lucuska! Feel calmer? 💫");
+                setTimeout(() => {
+                    const modal = document.getElementById('breathing-modal');
+                    if (modal && !modal.classList.contains('hidden')) {
+                        closeBreathingModal();
+                    }
+                }, 3200);
+            }, 1400);
+        }
+        
+        // ========== TRIVIA - unchanged ==========
+        let currentTriviaQuestions = [];
+        
+        async function fetchLiveTrivia(amount = 10) {
+            try {
+                const url = `https://opentdb.com/api.php?amount=${amount}&category=9&difficulty=easy&type=multiple`;
+                const res = await fetch(url);
+                
+                if (!res.ok) throw new Error('API response not OK');
+                
+                const data = await res.json();
+                
+                if (data.response_code !== 0 || !data.results || data.results.length === 0) {
+                    throw new Error('No questions returned');
+                }
+                
+                const normalized = data.results.map(item => {
+                    const decode = (str) => {
+                        const txt = document.createElement('textarea');
+                        txt.innerHTML = str;
+                        return txt.value;
+                    };
+                    
+                    const question = decode(item.question);
+                    const correctAnswer = decode(item.correct_answer);
+                    const incorrect = item.incorrect_answers.map(decode);
+                    
+                    let options = [...incorrect, correctAnswer];
+                    options = options.sort(() => Math.random() - 0.5);
+                    
+                    const correctIndex = options.indexOf(correctAnswer);
+                    
+                    return {
+                        q: question,
+                        options: options,
+                        correct: correctIndex
+                    };
+                });
+                
+                return normalized;
+            } catch (err) {
+                console.warn('[Trivia] Live API failed:', err.message);
+                return null;
+            }
+        }
+        
+        function openTriviaModal() {
+            const modal = document.getElementById('trivia-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            currentTriviaQuestions = [];
+            loadLiveTrivia();
+        }
+        window.openTriviaModal = openTriviaModal;
+        
+        async function loadLiveTrivia() {
+            const questionContainer = document.getElementById('trivia-question-container');
+            const feedbackContainer = document.getElementById('trivia-feedback-container');
+            
+            questionContainer.classList.remove('hidden');
+            feedbackContainer.classList.add('hidden');
+            
+            const liveQuestions = await fetchLiveTrivia(10);
+            
+            if (liveQuestions && liveQuestions.length > 0) {
+                currentTriviaQuestions = liveQuestions;
+            } else {
+                currentTriviaQuestions = [];
+                const qEl = document.getElementById('trivia-question');
+                const opts = document.getElementById('trivia-options');
+                qEl.innerHTML = "Couldn't load new questions right now 😔";
+                opts.innerHTML = `
+                    <div class="text-center text-sm text-amber-600 p-4">
+                        Please check your internet connection and try again.<br>
+                        <button onclick="loadLiveTrivia()" class="mt-3 px-4 py-1.5 bg-amber-500 text-white rounded-2xl text-xs font-bold">Try Again</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            loadNewTrivia();
+        }
+        
+        function closeTriviaModal() {
+            const modal = document.getElementById('trivia-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            
+            document.getElementById('trivia-question-container').classList.remove('hidden');
+            document.getElementById('trivia-feedback-container').classList.add('hidden');
+        }
+        
+        function loadNewTrivia() {
+            const questionContainer = document.getElementById('trivia-question-container');
+            const feedbackContainer = document.getElementById('trivia-feedback-container');
+            
+            questionContainer.classList.remove('hidden');
+            feedbackContainer.classList.add('hidden');
+            
+            const source = currentTriviaQuestions;
+            
+            if (!source || source.length === 0) {
+                document.getElementById('trivia-question').innerHTML = "No questions loaded";
+                return;
+            }
+            
+            const item = source[Math.floor(Math.random() * source.length)];
+            
+            document.getElementById('trivia-question').innerHTML = item.q;
+            
+            const optionsContainer = document.getElementById('trivia-options');
+            optionsContainer.innerHTML = '';
+            optionsContainer.style.pointerEvents = 'auto';
+            
+            item.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full px-4 py-[16px] text-left bg-white border border-amber-200 hover:bg-amber-50 active:bg-amber-100 rounded-2xl text-[15px] font-medium text-amber-800 transition-all flex items-center gap-3 cursor-pointer shadow-sm';
+                btn.type = 'button';
+                btn.innerHTML = `<span class="flex-1 leading-tight">${option}</span>`;
+                
+                const handleAnswer = (ev) => {
+                    if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+                    checkTriviaAnswer(index, item.correct, item);
+                };
+                
+                btn.onclick = handleAnswer;
+                btn.addEventListener('click', handleAnswer, { passive: false });
+                btn.addEventListener('touchend', handleAnswer, { passive: false });
+                
+                optionsContainer.appendChild(btn);
+            });
+        }
+        
+        function checkTriviaAnswer(selectedIndex, correctIndex, item) {
+            const optionsContainer = document.getElementById('trivia-options');
+            const feedbackContainer = document.getElementById('trivia-feedback-container');
+            const questionContainer = document.getElementById('trivia-question-container');
+            
+            const buttons = optionsContainer.querySelectorAll('button');
+            const isCorrect = selectedIndex === correctIndex;
+            
+            if (isCorrect) {
+                buttons[selectedIndex].classList.add('!bg-emerald-100', '!border-emerald-300', '!text-emerald-700');
+                buttons[selectedIndex].innerHTML = `✅ <span class="flex-1">${item.options[selectedIndex]}</span>`;
+            } else {
+                buttons[selectedIndex].classList.add('!bg-red-100', '!border-red-300', '!text-red-700');
+                buttons[selectedIndex].innerHTML = `❌ <span class="flex-1">${item.options[selectedIndex]}</span>`;
+                buttons[correctIndex].classList.add('!bg-emerald-100', '!border-emerald-300', '!text-emerald-700');
+                buttons[correctIndex].innerHTML = `✅ <span class="flex-1">${item.options[correctIndex]}</span>`;
+            }
+            
+            setTimeout(() => {
+                questionContainer.classList.add('hidden');
+                feedbackContainer.classList.remove('hidden');
+                
+                const feedback = document.getElementById('trivia-feedback');
+                if (isCorrect) {
+                    feedback.innerHTML = `<div class="text-emerald-600"><div class="text-2xl mb-1">🎉</div><div class="font-bold text-lg">Correct!</div></div>`;
+                } else {
+                    feedback.innerHTML = `<div class="text-amber-600"><div class="text-2xl mb-1">💫</div><div class="font-bold">The answer was: <span class="text-emerald-700">${item.options[correctIndex]}</span></div><div class="text-sm mt-1">Great try!</div></div>`;
+                }
+            }, 820);
+        }
+        
+        function nextTriviaQuestion() {
+            document.getElementById('trivia-question-container').classList.remove('hidden');
+            document.getElementById('trivia-feedback-container').classList.add('hidden');
+            loadNewTrivia();
+        }
+        
+
+        
+        // ========== FINAL GLOBAL EXPOSURES ==========
+        window.openWindowSwap = openWindowSwap;
+        window.openEyeModal = openEyeModal;
+        window.openBreathingModal = openBreathingModal;
+        window.openTriviaModal = openTriviaModal;
+        window.openQuickDraw = openQuickDraw;
+        
+        window.closeEyeModal = closeEyeModal;
+        window.closeBreathingModal = closeBreathingModal;
+        window.closeTriviaModal = closeTriviaModal;
+        
+        window.resetEyeSession = resetEyeSession;
+        window.nextEyeStep = nextEyeStep;
+        window.prevEyeStep = prevEyeStep;
+        
+        window.startBreathing = startBreathing;
+        window.stopBreathing = stopBreathing;
+        
+        window.checkTriviaAnswer = checkTriviaAnswer;
+        window.nextTriviaQuestion = nextTriviaQuestion;
+        
+        // Run init
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1f268ec69489a40',t:'MTc4NDcyMjkzNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
