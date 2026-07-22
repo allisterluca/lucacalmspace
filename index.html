@@ -346,7 +346,7 @@
                 
                 <div>
                     <h3 class="font-semibold text-2xl text-indigo-900">Feeling Bored?</h3>
-                    <p class="text-indigo-700 mt-1.5 text-sm leading-snug">Draw silly doodles and let computer guess what you drew.To spark your creativity!</p>
+                    <p class="text-indigo-700 mt-1.5 text-sm leading-snug">Draw silly doodles and let computer guess what you drew.</p>
                     
                     <div class="flex items-center mt-5">
                         <button onclick="event.stopImmediatePropagation(); openQuickDraw()" 
@@ -662,7 +662,7 @@
         // ========== EYE EXERCISES - COMPLETELY REDESIGNED BEAUTIFUL VERSION (no timers) ==========
         let eyeSteps = [
             { id: "twenty", title: "20-20-20 Rule", instruction: "Look far into the distance to relax your eyes.", type: "focus" },
-            { id: "palming", title: "Warm Palming", instruction: "Cover your eyes with warm palms. Let the darkness settle.", type: "palm" },
+            { id: "palming", title: "Rub your palms gently", instruction: "And Cover your eyes with warm palms. .", type: "palm" },
             { id: "rolls", title: "Eye Rolls", instruction: "Roll your eyes slowly in a circle.", type: "roll" },
             { id: "nearfar", title: "Near-Far Focus", instruction: "Shift focus between near and far objects.", type: "nearfar" },
             { id: "blink", title: "Blinking Break", instruction: "Gently blink to refresh your eyes.", type: "blink" }
@@ -718,10 +718,10 @@
             const hint = document.getElementById('eye-passive-hint');
             if (!hint) return;
             const hints = { 
-                'focus': 'Breathe softly and hold your gaze on the distant point.', 
-                'palm': 'Feel the warmth and let your eyes rest in darkness.', 
-                'roll': 'Relax and gently roll your eyes in a slow circle.', 
-                'nearfar': 'Gently shift your focus between the near and far targets.', 
+                'focus': 'Breathe softly and look at a distance for few seconds.', 
+                'palm': 'Feel the warmth and let your eyes rest.', 
+                'roll': 'Relax and gently roll your eyes in a clockwise 3 times and repeat the same Anti-Clockwise.', 
+                'nearfar': 'Focus at a object nearby and then gentle focus at object at a distance. Repeat 3 times slowly.', 
                 'blink': 'Allow the natural rhythm of blinking to refresh your eyes.' 
             };
             hint.innerHTML = hints[step.type] || 'Just relax and watch.';
@@ -747,8 +747,8 @@
                     <div class="mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 text-emerald-500 rounded-full mb-5">
                         <i class="fa-solid fa-check-circle text-5xl"></i>
                     </div>
-                    <h3 class="text-emerald-800 font-bold text-3xl mb-1">Beautiful work, Lucuska! 💕</h3>
-                    <p class="text-emerald-700 text-[15px]">Your eyes feel refreshed and relaxed.<br><span class="text-xs text-emerald-600">— Tall Cappuccino is proud of you</span></p>
+                    <h3 class="text-emerald-800 font-bold text-3xl mb-1">Beautiful work, Luca 💕</h3>
+                    <p class="text-emerald-700 text-[15px]">Your eyes feel refreshed and relaxed.<br></p>
                     <div class="mt-6">
                         <button onclick="resetEyeSession()" class="px-7 py-[11px] text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 transition-colors text-white rounded-3xl flex items-center justify-center mx-auto gap-2 shadow">
                             <i class="fa-solid fa-redo"></i>
